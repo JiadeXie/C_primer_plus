@@ -1,21 +1,20 @@
-/* convert.c -- 自动类型转换 */
+/* pound.c -- 定义一个带一个参数的函数 */
 #include <stdio.h>
+void pound (int n);
 int main()
 {
-    char ch;
-    int i;
-    float fl;
+    int times=5;
+    char ch='!';
+    float  f=6.0;
 
-    fl=i=ch='C';
-    printf("ch = %c, i = %d, fl = %2.2f\n",ch,i,fl);
-    ch=ch+1;
-    i=fl+2*ch;
-    fl = 2.0*ch+i;
-    printf("ch = %c,i=%d,fl=%2.2f\n",ch,i,fl);
-    ch=1107;
-    printf("Now ch=%c\n",ch);
-    ch=80.89;
-    printf("Now ch=%c\n",ch);
+    pound(times);
+    pound(ch);
+    pound(f);
 
     return 0;
+}
+void pound(int n)
+{
+    while(n-->0) printf("#");
+    printf('\n');
 }
