@@ -1,6 +1,4 @@
-//turn temperatures in s or k
 #include <stdio.h>
-#include <math.h>
 int main(void)
 {
     const int FIRST_OZ=46;
