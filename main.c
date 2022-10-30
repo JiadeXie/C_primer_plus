@@ -3,14 +3,15 @@
 #include <math.h>
 int main(void)
 {
-    int n=3;
-    
-    while(n)  printf("%2d is true\n",n--);
-    printf("%2d is false\n",n);
+    const int FIRST_OZ=46;
+    const int NEXT_OZ=20;
+    int ounces,cost;
 
-    n=-3;
-    while (n) printf("%2d is true\n",n++);
-    printf("%2d is false\n",n);
+    printf("ounces  cost\n");
+    for (ounces=1, cost=FIRST_OZ;ounces<=16;ounces++,cost+=NEXT_OZ)
+    {
+        printf("%5d $%4.2f\n",ounces,cost/100.0);
+    }
 
     return 0;
 }
