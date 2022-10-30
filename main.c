@@ -1,22 +1,19 @@
 //turn temperatures in s or k
 #include <stdio.h>
-
+#include <math.h>
 int main(void)
 {
-    long num;
-    long sum=0L;
-    int status;
+    const double ANSWER=3.14159;
+    double response;
 
-    printf("Please enter an integer to be summed ");
-    printf("(q to quit): ");
-    status= scanf("%ld", &num);
-    while (status==1)
+    printf("What is the value of pi?\n");
+    scanf("%lf",&response);
+    while (fabs(response-ANSWER)>0.0001)
     {
-        sum=sum+num;
-        printf("Please enter next integer (q to quit): ");
-        status= scanf("%ld",&num);
+        printf("Try again!\n");
+        scanf("%lf",&response);
     }
-    printf("Those integers sum to %ld.\n",sum);
+    printf("Close enough!\n");
 
     return 0;
 }
