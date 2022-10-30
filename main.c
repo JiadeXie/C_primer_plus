@@ -1,19 +1,29 @@
-//running.c -- A useful program for runners
-#define SIXTY 60
+//turn temperatures in s or k
 #include <stdio.h>
 
 int main(void)
 {
-    int min;
+    void temperatures(double);
+    double h;
+    int c;
 
-    printf("please enter the minutes or 0 to quit:\n");
-    scanf("%d",&min);
-    while(min>0)
+    printf("please enter temperatures in h(q to quit):\n");
+    c=scanf("%lf",&h);
+    while(c==1)
     {
-        printf("%d is %d hour and %d minutes\n",min,min/SIXTY,min%SIXTY);
-        printf("please enter the minutes or 0 to quit:\n");
-        scanf("%d",&min);
+        temperatures(h);
+        printf("please enter temperatures in h(q to quit):\n");
+        c=scanf("%lf",&h);
     }
-    
+
     return 0;
+}
+
+void temperatures(double t)
+{
+    const double  F_TO_C=32.0,C_TO_K=273.16;
+    double s,k;
+    s=5.0/9.0*(t-F_TO_C);
+    k=s+C_TO_K;
+    printf("%.2f is %.2f or %.2f\n",t,s,k);
 }
