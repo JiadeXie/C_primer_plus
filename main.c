@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define ROWS 6
+#define ROWS 10
 #define CHARS 10
 int main(void)
 {
@@ -8,7 +8,7 @@ int main(void)
 
     for(row=0;row<ROWS;row++)
     {
-        for (ch='A'; ch<('A'+CHARS); ch++)
+        for (ch=('A'+row); ch<('A'+CHARS); ch++)
         {printf("%c",ch);}
             printf("\n");
     }
