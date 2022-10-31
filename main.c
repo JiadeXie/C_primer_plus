@@ -1,15 +1,17 @@
 #include <stdio.h>
+#define ROWS 6
+#define CHARS 10
 int main(void)
 {
-    const int secret_code=13;
-    int code_entered;
-    do
+    int row;
+    char ch;
+
+    for(row=0;row<ROWS;row++)
     {
-        printf("To enter the triskaidekaphobia therapy club,\n");
-        printf("please enter the secret code number: ");
-        scanf("%d",&code_entered);
-    } while (code_entered!=secret_code);
-    printf("Congratulations! You are cured!\n");
+        for (ch='A'; ch<('A'+CHARS); ch++)
+        {printf("%c",ch);}
+            printf("\n");
+    }
 
     return 0;
 }
