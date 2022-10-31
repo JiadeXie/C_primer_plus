@@ -1,17 +1,15 @@
 #include <stdio.h>
 int main(void)
 {
-    int t_ct;
-    double time,power_of_2;
-    int limit;
-
-    printf("Enter the number of terms you want:");
-    scanf("%d",&limit);
-    for(time=0,power_of_2=1,t_ct=1;t_ct<=limit;t_ct++,power_of_2*=2.0)
+    const int secret_code=13;
+    int code_entered;
+    do
     {
-        time+=1.0/power_of_2;
-        printf("time=%f when terms=%d.\n",time,t_ct);
-    }
+        printf("To enter the triskaidekaphobia therapy club,\n");
+        printf("please enter the secret code number: ");
+        scanf("%d",&code_entered);
+    } while (code_entered!=secret_code);
+    printf("Congratulations! You are cured!\n");
 
     return 0;
 }
