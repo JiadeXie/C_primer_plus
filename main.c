@@ -1,28 +1,21 @@
 #include <stdio.h>
-double power(double n,int p);
 int main(void)
 {
-    double x,xpow;
-    int exp;
-
-    printf("Enter a number and the positive integer power");
-    printf(" to which\nthe number will be raised. Enter q");
-    printf(" to quit.\n");
-    while (scanf("%lf%d",&x,&exp)==2)
+    int a,k,i,j;
+    char ch,cd;
+    printf("please enter a char:");
+    scanf("%c",&ch);
+    i=ch-65+1; //计算行数
+    j=i-1;//计算单侧空格数量
+    for (a=0;a<i;)
     {
-        xpow= power(x,exp);
-        printf("%.3g to the power %d is %.5g\n",x,exp,xpow);
-        printf("Enter the next pair of numbers or q to quit.\n");
+        for (k=0;k<j;k++) printf(" ");
+        for(cd='A';cd<=65+a;cd++) printf("%c",cd);
+        for (cd-=2;cd>='A';cd--) printf("%c",cd);
+        printf(" \n");
+        j--;
+        a++;
     }
-    printf("Hope you enjoyed this power trip -- bye!\n");
 
     return 0;
-}
-
-double power(double n,int p)
-{
-    double pow=1;
-    int i;
-    for (i=1;i<=p;i++) pow*=n;
-    return pow;
 }
