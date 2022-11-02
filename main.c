@@ -1,15 +1,21 @@
 #include <stdio.h>
 int main(void)
 {
-    double da=100.0,de=100;
-    int year=0;
-    do
+    const int FREEZING=0;
+    float temperature;
+    int cold_days=0;
+    int all_days=0;
+    printf("Enter the list of daily low temperature.\n");
+    printf("Use Celsius,and enter q to quit.\n");
+    while (scanf("%lf",&temperature)==1)
     {
-    da=da+100.0*0.1;//计算单利
-    de=de+de*0.05;//计算复利
-    year++;
-    }while(da-de>=0);
-    printf("da=%.2lf,de=%.2lf,year=%d",da,de,year);
+        all_days++;
+        if(temperature<FREEZING) cold_days++;
+    }
+    if(all_days!=0)
+        printf("%d days total: %.1f%% were below freezing.\n",
+               all_days,100.0*(float)cold_days/all_days);
+    if(all_days==0) printf("No data entered!\n");
 
     return 0;
 }
