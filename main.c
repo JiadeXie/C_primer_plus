@@ -1,16 +1,13 @@
 #include <stdio.h>
-#define SPACE ' '
+#include <ctype.h>
 int main(void)
 {
     char ch;
-
-    ch=getchar();
-    while (ch!='\n')
+    while ((ch=getchar())!='\n')
     {
-        if(ch==SPACE) putchar(ch);
-        else putchar(ch+1);
-        ch=getchar();
+        if(isalpha(ch)) putchar(ch+1);
+        else putchar(ch);
     }
-    putchar(ch);//打印换行符
+    putchar(ch);
     return 0;
 }
