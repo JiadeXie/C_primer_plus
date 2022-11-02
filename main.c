@@ -2,34 +2,20 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdbool.h>
-#define STOP '|'
+#define COVERAGE 350
 int main(void)
 {
-    char c;//读入字符
-    char prev;//读入的前一个字符
-    long n_chars=0L;//字符数
-    int n_lines=0;//行数
-    int n_words=0;//单词数
-    int p_lines=0;//不完整的行
-    bool inword=false;//若读入字符c在单词中，inword标记等于true
+    int sq_feet;
+    int cans;
 
-    printf("Enter text to be analyzed(| to terminate):\n");
-    prev='\n';//用于识别完整的行
-    while ((c=getchar())!=STOP)//STOP等于‘|’
+    printf("Enter number of square feet to be painted:\n");
+    while (scanf("%d",&sq_feet)==1)
     {
-        n_chars++;//统计字符
-        if(c=='\n') n_lines++;//统计行
-        if(!isspace(c)&&!inword)//用于判断c是否为新单词的首字母
-        {
-            inword=true;//开始一个新的单词
-            n_words++;//统计单词
-        }
-        if(isspace(c)&&inword) inword=false;//达到单词的末尾
-        prev=c;//保存字符的值
+        cans=sq_feet/COVERAGE;
+        cans+=(sq_feet%COVERAGE==0)?0:1;
+        printf("You need %d %s of paint.\n",cans,cans==1?"can":"cans");
+        printf("Enter next value(q to quit):\n");
     }
-    if(prev!='\n') p_lines=1;
-    printf("characters=%ld,words=%d,lines=%d,",n_chars,n_words,n_lines);
-    printf("partial lines=%d\n",p_lines);
     return 0;
 
 }
