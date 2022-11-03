@@ -1,20 +1,32 @@
-//统计字符数，单词数，行数
 #include <stdio.h>
+#include <ctype.h>
 int main(void)
 {
-    float length,width;
-    printf("Enter the length of the rectangle:\n");
-    while (scanf("%f",&length)==1)
-    {
-        printf("Length=%0.2f:\n",length);
-        printf("Enter its width:\n");
-        if(scanf("%f",&width)!=1) break;
-        printf("Width=%0.2f:\n",width);
-        printf("Are=%0.2f:\n",length*width);
-        printf("Enter the length of the rectangle:\n");
-    }
-    printf("Done.\n");
+    char ch;
 
+    printf("Give me a letter of the alphabet,and I will give");
+    printf("an animal name\nbeginning with that letter.\n");
+    printf("Please type in a letter;type # to end my act.\n");
+    while ((ch=getchar())!='#')
+    {
+        if('\n'==ch) continue;
+        if(islower(ch))
+            switch (ch)
+            {
+                case 'a':printf("argali, a wild sheep of Asia\n");//break;
+                case 'b':printf("babirusa, a wild pig of Malay\n");//break;
+                case 'c':printf("coati,racoonlike mammal\n");//break;
+                case 'd':printf("desman,aquatic,molelike critter\n");//break;
+                case 'e':printf("echidna,the spiny anteater\n");//break;
+                case 'f':printf("fisher,brownish marten\n");//break;
+                default:
+                    printf("That is a stumper!\n");
+            }
+        else printf("I recognize only lowcase letters.\n");
+        while (getchar()!='\n') continue;
+        printf("Please type another letter or a #.\n");
+        printf("Bye!\n");
+    }
     return 0;
 
 }
