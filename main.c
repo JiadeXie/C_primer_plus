@@ -1,32 +1,24 @@
 #include <stdio.h>
-#include <ctype.h>
 int main(void)
 {
-    char ch;
-    int a_ct,e_ct,i_ct,o_ct,u_ct;
-    a_ct=e_ct=i_ct=o_ct=u_ct=0;
-
-    printf("Enter some text;enter # to quit.\n");
+    char ch,pre;
+    int flag=0;
+    printf("please enter context(# to quit):\n");
     while ((ch=getchar())!='#')
     {
         switch (ch)
         {
-            case 'a':
-            case 'A': a_ct++;break;
-            case 'e':
-            case 'E': e_ct++;break;
             case 'i':
-            case 'I': i_ct++;break;
-            case 'o':
-            case 'O': o_ct++;break;
-            case 'u':
-            case 'U': u_ct++;break;
-            default: break;
+                if(pre=='e')
+                {
+                    flag++;
+                    pre=ch;
+                    break;
+                }
+            default:pre=ch;
         }
     }
-    printf("number of vowels: A E I O U\n");
-    printf("              %4d %4d %4d %4d %4d\n",a_ct,e_ct,i_ct,o_ct,u_ct);
-
+    printf("\nc=%d\ndone.",flag);
     return 0;
 
 }
