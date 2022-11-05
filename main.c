@@ -17,31 +17,51 @@ int main(void)
     double time;
     printf("**********************************************************************\n");
     printf("Enter the number corresponding to the desired pay rate or action:\n");
-    printf("1) $8.75/hr\t\t\t2) $9.33/hr\n");
-    printf("3) $10.00/hr\t\t\t4) $11.20/hr\n");
-    printf("5) quit\n");
+    printf("a) $8.75/hr\t\t\tb) $9.33/hr\n");
+    printf("c) $10.00/hr\t\t\td) $11.20/hr\n");
+    printf("q) quit\n");
     printf("**********************************************************************\n");
-    scanf("%d",&flag);
-    while (!(flag==5))
+    scanf("%c",&flag);
+    while (getchar()!='\n') continue;
+    while (!(flag=='q'))
     {
-        printf("please enter work time:\n");
-        scanf("%lf",&time);
+
         switch (flag)
         {
-            case 1:showsal(SAL1,time);break;
-            case 2:showsal(SAL2,time);break;
-            case 3:showsal(SAL3,time);break;
-            case 4:showsal(SAL4,time);break;
-            default:printf("Enter the right number.\n");break;
+            case 'a':
+            {
+                printf("please enter work time:\n");
+                scanf("%lf",&time);
+                showsal(SAL1,time);break;
+            }
+            case 'b':
+            {
+                printf("please enter work time:\n");
+                scanf("%lf",&time);
+                showsal(SAL2,time);break;
+            }
+            case 'c':
+            {
+                printf("please enter work time:\n");
+                scanf("%lf",&time);
+                showsal(SAL3,time);break;
+            }
+            case 'd':
+            {
+                printf("please enter work time:\n");
+                scanf("%lf",&time);
+                showsal(SAL4,time);break;
+            }
+            default:printf("Enter the right letter.\n");break;
         }
         printf("**********************************************************************\n");
         printf("Enter the number corresponding to the desired pay rate or action:\n");
-        printf("1) $8.75/hr\t\t\t2) $9.33/hr\n");
-        printf("3) $10.00/hr\t\t\t4) $11.20/hr\n");
-        printf("5) quit\n");
+        printf("a) $8.75/hr\t\t\tb) $9.33/hr\n");
+        printf("c) $10.00/hr\t\t\td) $11.20/hr\n");
+        printf("q) quit\n");
         printf("**********************************************************************\n");
-        scanf("%d",&flag);
-
+        scanf("%c",&flag);
+        while (getchar()!='\n') continue;
     }
     printf("Done.\n");
     return 0;
