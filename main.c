@@ -1,46 +1,31 @@
 #include <stdio.h>
-long fact(int n);
-long rfact(int n);
+void to_binary(unsigned long n);
 
 int main(void)
 {
-    int num;
-
-    printf("This program calculates factorials.\n");
-    printf("Enter a value in the range 0-12 (q to quit):\n");
-    while (scanf("%d",&num)==1)
+    unsigned long number;
+    printf("Enter an integer (q to quit):\n");
+    while (scanf("%lu",&number)==1)
     {
-        if(num<0) printf("No negative number,please.\n");
-        else if(num>12) printf("Keep input under 13.\n");
-        else
-        {
-            printf("loop: %d factorial=%ld\n",num, fact(num));
-            printf("recursion: %d factorial=%ld\n",num, rfact(num));
-        }
-        printf("Enter a value in the range 0-12 (q to quit):\n");
+        printf("Binary equivalent: ");
+        to_binary(number);
+        putchar('\n');
+        printf("Enter an integer £¨q to quit):\n");
     }
-    printf("Bye.\n");
+    printf("Done.\n");
 
     return 0;
+
 }
 
-long fact(int n)
+void to_binary(unsigned long n)
 {
-    long ans;
-
-    for(ans=1;n>1;n--) ans*=n;
-    return ans;
+    int r;
+    r=n%2;
+    if(n>=2) to_binary(n/2);
+    putchar(r==0?'0':'1');
+    return;
 }
-
-long rfact(int n)
-{
-    long ans;
-    if(n>0) ans=n* rfact(n-1);
-    else ans=1;
-    return ans;
-}
-
-
 
 
 
