@@ -1,27 +1,16 @@
 #include <stdio.h>
-int imin(int,int);
+void up_and_down(int);
 
 int main(void)
 {
-    int evil1,evil2;
-
-    printf("Enter a pair of integers (q to quit):\n");
-    while(scanf("%d %d",&evil1,&evil2)==2)
-    {
-        printf("The lesser of %d and %d is %d.\n",evil1,evil2, imin(evil1,evil2));
-        printf("Enter a pair of integers (q to quit):\n");
-    }
-    printf("Bye.\n");
+    up_and_down(1);
     return 0;
-
 }
-
-int imin(int n,int m)
+void up_and_down(int n)
 {
-    int min;
-    if(n<m) min=n;
-    else min=m;
-    return min;
+    printf("Level %d£ºn location %p\n",n,&n);
+    if(n<4) up_and_down(n+1);
+    printf("LEVEL %d: n location %p\n",n,&n);
 }
 
 
