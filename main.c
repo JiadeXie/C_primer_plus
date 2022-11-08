@@ -28,7 +28,7 @@ void to_base_n(unsigned long n,unsigned base)
 {
     int r;
     r=(int)n%base;
-    if(n>=2) to_base_n(n/base,base);
+    if(n>=base) to_base_n(n/base,base);
     printf("%d",r);
     return;
 }
