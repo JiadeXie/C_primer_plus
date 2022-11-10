@@ -1,63 +1,89 @@
 #include <stdio.h>
-#define MONTHS 12
-#define YEARS 5
-float yearf(const float ar[][MONTHS],int y);
-void monthf(const float (*ar)[MONTHS],int y);
+void inputf(double ar[],int col);
+double rowave(double ar[],int col);
+double allave(double ar[][5],int row);
+double maximum(double ar[][5],int row);
+void printans(double a,double b,double c,double d,double e);
 
 int main(void)
 {
-    const float rain[YEARS][MONTHS]=
-            {
-            {4.3, 4.3, 4.3, 3.0, 2.0, 1.2, 0.2, 0.2, 0.4, 2.4, 3.5, 6.6},
-            {8.5, 8.2, 1.2, 1.6, 2.4, 0.0, 5.2, 0.9, 0.3, 0.9, 1.4, 7.3},
-            {9.1, 8.5, 6.7, 4.3, 2.1, 0.8, 0.2, 0.2, 1.1, 2.3, 6.1, 8.4},
-            {7.2, 9.9, 8.4, 3.3, 1.2, 0.8, 0.4, 0.0, 0.6, 1.7, 4.3, 6.2},
-            {7.6, 5.6, 3.8, 2.8, 3.8, 0.2, 0.0, 0.0, 0.0, 1.3, 2.6, 5.2}
-    };
-    int year,month;
-    float subtot,total;
+    double a[3][5];
+    double rave1,rave2,rave3,aave,max;
 
-    printf("YEAR RAINFALL (inches)\n");
-    total= yearf(rain,YEARS);
-    printf("\nThe yearly average is %.1f inches.\n\n",total/YEARS);
-    printf("MONTHLY AVERAGES:\n\n");
-    printf("Jan Feb Mar Apr May Jun Jul Aug Sep Oct ");
-    printf("Nov Dec\n");
-    monthf(rain,YEARS);
-
-    printf("\n");
+    for (int i = 0; i < 3; ++i)
+    {
+        printf("please enter 5 numbers:\n");
+        inputf(a[i],5);
+    }
+    printf("array:\n");
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 5; ++j)
+        {
+            printf("%.2f  ",a[i][j]);
+        }
+        putchar('\n');
+    }
+    rave1= rowave(a[0],5);
+    rave2= rowave(a[1],5);
+    rave3= rowave(a[2],5);
+    aave= allave(a,3);
+    max= maximum(a,3);
+    printans(rave1,rave2,rave3,aave,max);
 
     return 0;
 
 }
 
-float yearf(const float ar[][MONTHS],int y)
+void inputf(double ar[],int col)
 {
-    int year,month;
-    float subtot,total;
-
-    for(year=0,total=0;year<y;year++)
+    for (int i = 0; i < col; ++i)
     {
-        for (month=0,subtot=0;month<MONTHS;month++) subtot+=ar[year][month];
-        printf("%5d %15.1f\n",2010+year,subtot);
-        total+=subtot;
+        scanf("%lf",&ar[i]);
     }
-    return total;
+    while (getchar()!='\n') continue;
 
 }
 
-void monthf(const float (*ar)[MONTHS],int y)
+double rowave(double ar[],int col)
 {
-    int year,month;
-    float subtot;
-
-    for (month=0;month<MONTHS;month++)
+    double total=0.0;
+    for (int i = 0; i < col; ++i)
     {
-        for (year=0,subtot=0;year<y;year++) subtot+=ar[year][month];
-        printf("%4.1f",subtot/YEARS);
+        total+=ar[i];
     }
+    return total/5.0;
 }
 
+double allave(double ar[][5],int row)
+{
+    double total=0;
+    for (int i = 0; i < row; ++i)
+    {
+        for (int j = 0; j < 5; ++j)
+        {
+            total+=ar[i][j];
+        }
+    }
+    return total/15.0;
 
+}
 
+double maximum(double ar[][5],int row)
+{
+    double max=ar[0][0];
+    for (int i = 0; i < row; ++i)
+    {
+        for (int j = 0; j < 5; ++j)
+        {
+            if(max<ar[i][j]) max=ar[i][j];
+        }
+    }
+    return max;
+}
 
+void printans(double a,double b,double c,double d,double e)
+{
+    printf("rave1=%.2f,rave2=%.2f,rave3=%.2f\nall average=%.2f,maximum=%.2f\n",
+           a,b,c,d,e);
+}
