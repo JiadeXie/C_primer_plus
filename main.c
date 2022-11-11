@@ -1,37 +1,31 @@
 #include <stdio.h>
-#define STLEN 10
+void put1(const char*);
+int put2(const char*);
 
 int main(void)
 {
-    char words[STLEN];
-    int i;
-
-    puts("Enter strings (empty line to quit):");
-    while (fgets(words,STLEN,stdin)!=NULL && words[0]!='\n')
-    {
-        i=0;
-        while (words[i]!='\n'&&words[i]!='\0') i++;
-        if(words[i]=='\n')  words[i]='\0';//当输入的字符串较短时
-        else//当输入的字符串超出数组长度时
-            while (getchar()!='\n') continue;
-        puts(words);
-    }
-    puts("Done.");
+    put1("If I'd as much money");
+    put1(" as I could spend,\n");
+    printf("I count %d characters.\n", put2("I never would cry old chairs to mend."));
 
     return 0;
 }
 
-char* s_gets(char* st,int n)
+void put1(const char* string)
 {
-    char* ret_val;
-    int i=0;
-
-    ret_val= fgets(st,n,stdin);
-    if(ret_val)
-    {
-        while (st[i]!='\n'&&st[i]!='\0') i++;
-        if(st[i]=='\n')  st[i]='\0';
-        else while (getchar()!='\n') continue;
-    }
-    return ret_val;
+    while (*string) putchar(*string++);
 }
+
+int put2(const char * string)
+{
+    int count=0;
+    while (*string)
+    {
+        putchar(*string++);
+        count++;
+    }
+    putchar('\n');
+
+    return count;
+}
+
