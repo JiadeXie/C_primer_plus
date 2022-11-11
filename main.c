@@ -1,25 +1,20 @@
 #include <stdio.h>
 #include <string.h>
-#define SIZE 30
-#define BUGSIZE 13
+#define SIZE 40
+#define ANSWER "Grant"
 char* s_gets(char* st,int n);
 
 int main(void)
 {
-    char flowers[SIZE];
-    char addon[]="s smell like old shoes.";
-    char bug[BUGSIZE];
-    int available;
-
-    puts("What is your favorite flower?");
-    s_gets(flowers,SIZE);
-    if((strlen(addon)+ strlen(flowers)+1)<=SIZE)   strcat(flowers,addon);
-    puts(flowers);
-    puts("What is your favorite bug?");
-    s_gets(bug,BUGSIZE);
-    available=BUGSIZE- strlen(bug)-1;
-    strncat(bug,addon,available);
-    puts(bug);
+    char try[SIZE];
+    puts("Who is buried in Grant's tomb?");
+    s_gets(try,SIZE);
+    while (strcmp(try,ANSWER)!=0)
+    {
+        puts("No,that's wrong.Try again.");
+        s_gets(try,SIZE);
+    }
+    puts("That's right!");
 
     return 0;
 }
