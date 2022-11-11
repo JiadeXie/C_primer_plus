@@ -1,31 +1,21 @@
 #include <stdio.h>
-void put1(const char*);
-int put2(const char*);
+#include <string.h>
+void fit(char*,unsigned int);
 
 int main(void)
 {
-    put1("If I'd as much money");
-    put1(" as I could spend,\n");
-    printf("I count %d characters.\n", put2("I never would cry old chairs to mend."));
+    char mesg[]="Things should be as simple as possible,"" but not simpler.";
+
+    puts(mesg);
+    fit(mesg,38);
+    puts(mesg);
+    puts("Let's look at some more of the string.");
+    puts(mesg+39);
 
     return 0;
 }
 
-void put1(const char* string)
+void fit(char* string,unsigned int size)
 {
-    while (*string) putchar(*string++);
+    if(strlen(string)>size) string[size]='\0';
 }
-
-int put2(const char * string)
-{
-    int count=0;
-    while (*string)
-    {
-        putchar(*string++);
-        count++;
-    }
-    putchar('\n');
-
-    return count;
-}
-
