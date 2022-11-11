@@ -1,17 +1,17 @@
 #include <stdio.h>
-#define MSG "I am a symbolic string constant."
-#define MAXLENGTH 81
+#define MSG "I'm special"
 
 int main(void)
 {
-    char words[MAXLENGTH]="I am a string in an array.";
-    const char* pt1="Something is pointing at me.";
-    puts("Here are some strings:");
-    puts(MSG);
-    puts(words);
-    puts(pt1);
-    words[8]='p';
-    puts(words);
+    char ar[]=MSG;
+    const char* pt=MSG;
+    printf("address of \"I'm special\": %p \n","I'm special");
+    printf("            address ar: %p\n",ar);
+    printf("            address pt: %p\n",pt);
+    printf("            address of MSG: %p\n",MSG);
+    printf("address of \"I'm special\": %p \n","I'm special");
+
+
 
     return 0;
 
