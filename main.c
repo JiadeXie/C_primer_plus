@@ -1,21 +1,39 @@
 #include <stdio.h>
 #include <string.h>
-void fit(char*,unsigned int);
+#define SIZE 80
+char* s_gets(char* st,int n);
 
 int main(void)
 {
-    char mesg[]="Things should be as simple as possible,"" but not simpler.";
+    char flowers[SIZE];
+    char addon[]="s smell like old shoes.";
 
-    puts(mesg);
-    fit(mesg,38);
-    puts(mesg);
-    puts("Let's look at some more of the string.");
-    puts(mesg+39);
+    puts("What is your favorite flower?");
+    if(s_gets(flowers,SIZE))
+    {
+        strcat(flowers,addon);
+        puts(flowers);
+        puts(addon);
+    } else puts("End of file encountered!");
+    puts("bye");
 
     return 0;
 }
 
-void fit(char* string,unsigned int size)
+char* s_gets(char* st,int n)
 {
-    if(strlen(string)>size) string[size]='\0';
+    char* ret_val;
+    int i=0;
+
+    ret_val= fgets(st,n,stdin);
+    if(ret_val)
+    {
+        while (st[i]!='\n'&&st[i]!='\0') i++;
+        if(st[i]=='\n') st[i]='\0';
+        else while (getchar()!='\n') continue;
+    }
+
+    return ret_val;
 }
+
+
