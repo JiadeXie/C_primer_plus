@@ -1,21 +1,27 @@
 #include <stdio.h>
 #include <string.h>
-#define SIZE 80
+#define LISTSIZE 6
 #define LIM 10
 #define STOP "quit"
 char* s_gets(char* st,int n);
 
 int main(void)
 {
-    char input[LIM][SIZE];
-    int ct=0;
-
-    printf("Enter up to %d lines (type quit to quit):\n",LIM);
-    while (ct<LIM&& s_gets(input[ct],SIZE)!=NULL&& strcmp(input[ct],STOP)!=0)
-    {
-        ct++;
-    }
-    printf("%d strings entered\n",ct);
+    const char* list[LISTSIZE]=
+            {"astronomy","astounding",
+             "astrophysics","ostracize",
+             "asterism","astrophobia"
+            };
+    int count=0;
+    int i;
+    for (i=0;i<LISTSIZE;i++)
+        if (strncmp(list[i],"astro",5)==0)
+        {
+            printf("Found: %s\n",list[i]);
+            count++;
+        }
+    printf("The list contained %d words beginnig"
+           " with astro.\n",count);
 
     return 0;
 }
