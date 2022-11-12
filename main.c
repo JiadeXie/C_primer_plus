@@ -1,20 +1,40 @@
 #include <stdio.h>
-#include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
-#define LIMIT 81
-void ToUpper(char*);
-int PunctCount(const char*);
+#define LIM 30
+char* s_gets(char* st,int n);
 
 int main(int argc,char* argv[])
 {
-    int i,times;
+    char number[LIM];
+    char* end;
+    long value;
 
-    if(argc<2||(times=atoi(argv[1]))<1)  printf("Usage: %s positive-number\n",argv[0]);
-    else
+    puts("Enter a number (empty line to quit):");
+    while (s_gets(number,LIM)&&number[0]!='\0')
     {
-        for (i=0;i<times;i++) puts("Hello,good looking!");
+        value= strtol(number,&end,10);
+        printf("base 10 input, base 10 output: %1d, stopped at %s (%d)\n",value,end,*end);
+        value= strtol(number,&end,16);
+        printf("base 16 input, base 10 output: %1d, stopped at %s (%d)\n",value,end,*end);
+        puts("Next number:");
     }
+    puts("Bye!\n");
 
     return 0;
+}
+
+char* s_gets(char* st,int n)
+{
+    char* ret_val;
+    int i=0;
+
+    ret_val= fgets(st,n,stdin);
+    if(ret_val)
+    {
+        while (st[i]!='\n'&&st[i]!='\0') i++;
+        if(st[i]=='\n')  st[i]='\0';
+        else while (getchar()!='\n') continue;
+    }
+
+    return ret_val;
 }
