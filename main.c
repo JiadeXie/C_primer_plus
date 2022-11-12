@@ -5,38 +5,12 @@
 void ToUpper(char*);
 int PunctCount(const char*);
 
-int main(void)
+int main(int argc,char* argv[])
 {
-    char line[LIMIT];
-    char* find;
-
-    puts("Please enter a line:");
-    fgets(line,LIMIT,stdin);
-    find= strchr(line,'\n');
-    if(find) *find='\0';
-    ToUpper(line);
-    puts(line);
-    printf("That line has %d punctuation characters.\n", PunctCount(line));
+    int count;
+    printf("The command line has %d arguments:\n",argc);
+    for (count=0;count<argc;count++) printf("%d: %s\n",count,argv[count]);
+    printf("\n");
 
     return 0;
-}
-
-void ToUpper(char* str)
-{
-    while (*str)
-    {
-        *str= toupper(*str);
-        str++;
-    }
-}
-
-int PunctCount(const char* str)
-{
-    int ct=0;
-    while (*str)
-    {
-        if(ispunct(*str)) ct++;
-        str++;
-    }
-    return ct;
 }
