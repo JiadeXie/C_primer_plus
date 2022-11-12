@@ -1,29 +1,25 @@
 #include <stdio.h>
 #include <string.h>
 #define SIZE 40
-#define LIM 5
+#define MAX 20
 #define TARGSIZE 7
 char* s_gets(char* st,int n);
 
 int main(void)
 {
-    char qwords[LIM][TARGSIZE];
-    char temp[SIZE];
-    int i=0;
+    char first[MAX];
+    char last[MAX];
+    char formal[2*MAX+10];
+    double prize;
 
-    printf("Enter %d words beginning with q:\n",LIM);
-    while (i<LIM&& s_gets(temp,SIZE))
-    {
-        if(temp[0]!='q') printf("%s doesn't begin with q!\n",temp);
-        else
-        {
-            strncpy(qwords[i],temp,TARGSIZE-1);
-            qwords[i][TARGSIZE-1]='\0';
-            i++;
-        }
-    }
-    puts("Here are the words accepted:");
-    for (i=0;i<LIM;i++) puts(qwords[i]);
+    puts("Enter your first name:");
+    s_gets(first,MAX);
+    puts("Enter your last name:");
+    s_gets(last,MAX);
+    puts("Enter your prize money:");
+    scanf("%lf",&prize);
+    sprintf(formal,"%s,%-19s: $%6.2f\n",last,first,prize);
+    puts(formal);
 
     return 0;
 }
