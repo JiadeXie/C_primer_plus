@@ -1,32 +1,29 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
-#define SIZE 40
-#define ANSWER "Grant"
-void TOLOWER(char* try);
-
 char* s_gets(char* st,int n);
+char* cmp(char*,char);
+
 
 int main(int argc,char* argv[])
 {
-    int i=1;
-    char try[SIZE];
-    puts("Who is buried in Grant's tomb?");
-    s_gets(try,SIZE);
-    try[0]=toupper(try[0]);
-    TOLOWER(try);
-
-    while (strcmp(try,ANSWER)!=0)
-    {
-        puts("No,that's wrong.Try again.");
-        s_gets(try,SIZE);
-        try[0]=toupper(try[0]);
-        TOLOWER(try);
-    }
-
-
-    puts("That's right!\n");
-
+    char string[51];
+    char* pt;
+    char ch;
+    int size=51;
+    do {
+        puts("please enter a string(»Ø³µ to quit):\n");
+        s_gets(string, size);
+        if(string[0]=='\0') break;
+        puts("your string is ");
+        puts(string);
+        printf("please enter a character:\n");
+        ch=getchar();
+        while (getchar()!='\n') continue;
+        pt = cmp(string, ch);
+        if(pt==NULL) puts("not found");
+        else if(*pt)printf("*pt=%c\n",*pt);
+    } while (1);
     return 0;
 }
 
@@ -54,4 +51,14 @@ void TOLOWER(char* try)
         try[i]=tolower(try[i]);
         i++;
     }
+}
+
+char* cmp(char* str,char ch)
+{
+    while (*str!=ch&&*str!='\0')
+    {
+        str++;
+    }
+    if(*str==ch) return str;
+    else return NULL;
 }
