@@ -1,14 +1,22 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #define SIZE 40
 #define ANSWER "Grant"
 char* s_gets(char* st,int n);
 
 int main(void)
 {
+    int i=1;
     char try[SIZE];
     puts("Who is buried in Grant's tomb?");
     s_gets(try,SIZE);
+    toupper(try[0]);
+    while (try[i]!='\0')
+    {
+        try[i]=tolower(try[i]);
+        i++;
+    }
     while (strcmp(try,ANSWER)!=0)
     {
         puts("No,that's wrong.Try again.");
