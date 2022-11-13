@@ -6,9 +6,35 @@ void input(char *);
 
 int main(void)
 {
-    char str[101];
-    input(str);
+    char ch;
+    int inword=0;
+    int words=0,ul=0,ll=0,nc=0,pc=0;
+    while ((ch=getchar())!=EOF)
+    {
+        if(isalpha(ch))
+        {
+            if(inword==0)
+            {
+                words++;
+                inword=1;
+            };
 
+            if(isupper(ch)) ul++;
+            if(islower(ch)) ll++;
+        }
+        if(isdigit(ch))
+        {
+            nc++;
+            inword=0;
+        }
+        if(!isalnum(ch))
+        {
+            inword=0;
+            if(ch!=' '&&ch!='\t'&&ch!='\n') pc++;
+        }
+    }
+    printf("words=%d,ul=%d,ll=%d,nc=%d,pc=%d",words,ul,ll,nc,pc);
+    getchar();
     return 0;
 }
 
