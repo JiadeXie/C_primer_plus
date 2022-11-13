@@ -1,24 +1,31 @@
 #include <stdio.h>
-#include <stdlib.h>
-#define LIM 30
+#include <string.h>
+#include <ctype.h>
+#define SIZE 40
+#define ANSWER "Grant"
+void TOLOWER(char* try);
+
 char* s_gets(char* st,int n);
 
 int main(int argc,char* argv[])
 {
-    char number[LIM];
-    char* end;
-    long value;
+    int i=1;
+    char try[SIZE];
+    puts("Who is buried in Grant's tomb?");
+    s_gets(try,SIZE);
+    try[0]=toupper(try[0]);
+    TOLOWER(try);
 
-    puts("Enter a number (empty line to quit):");
-    while (s_gets(number,LIM)&&number[0]!='\0')
+    while (strcmp(try,ANSWER)!=0)
     {
-        value= strtol(number,&end,10);
-        printf("base 10 input, base 10 output: %1d, stopped at %s (%d)\n",value,end,*end);
-        value= strtol(number,&end,16);
-        printf("base 16 input, base 10 output: %1d, stopped at %s (%d)\n",value,end,*end);
-        puts("Next number:");
+        puts("No,that's wrong.Try again.");
+        s_gets(try,SIZE);
+        try[0]=toupper(try[0]);
+        TOLOWER(try);
     }
-    puts("Bye!\n");
+
+
+    puts("That's right!\n");
 
     return 0;
 }
@@ -37,4 +44,14 @@ char* s_gets(char* st,int n)
     }
 
     return ret_val;
+}
+void TOLOWER(char* try)
+{
+    int i=1;
+    toupper(try[0]);
+    while (try[i]!='\0')
+    {
+        try[i]=tolower(try[i]);
+        i++;
+    }
 }
