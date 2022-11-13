@@ -3,31 +3,30 @@
 #include <ctype.h>
 char* s_gets(char* st,int n);
 int is_within(char*,char);
-char* mystrncpy(char *,char *,int );
+char* string_in(char *,char *);
 
 
 int main(void)
 {
-    char string1[101];
-    char string2[51];
-    int num;
+    char str1[101];
+    char str2[31];
+    char* pt;
 
     do {
-        puts("please enter string1（回车 in a new line to quit:\n");
-        fgets(string1,101,stdin);
-        if(string1[0]=='\n') break;
-        puts(string1);
-        puts("please enter string2（回车 in a new line to quit:\n");
-        fgets(string2,51,stdin);
-        puts(string2);
-        puts("please enter a number:\n");
-        scanf("%d",&num);
-        while (getchar()!='\n') continue;
-        mystrncpy(string1,string2,num);
-        puts(string1);
+        printf("please enter string_1(enter 回车 in a new line to quit):\n");
+        fgets(str1,101,stdin);
+        if(str1[0]=='\n') break;
+        puts(str1);
+        printf("please enter string_2(enter 回车 in a new line to quit):\n");
+        fgets(str2,31,stdin);
+        puts(str2);
+        pt=string_in(str1,str2);
+        printf("%s",pt);
+        putchar('\n');
 
     } while (1);
     puts("Done\n");
+
     return 0;
 }
 
@@ -99,4 +98,29 @@ char* mystrncpy(char *str1,char *str2,int n)
         }
     }
     return str1;
+}
+
+char* string_in(char * main,char * sub)
+{
+    int strl= strlen(sub);
+    strl--;//舍弃一个回车字符
+    printf("strl=%d\n",strl);
+    int count=0;
+
+    while (*main!='\0'&&count<strl)
+    {
+        if(*(main+count)==*(sub+count))
+        {
+            count++;
+            printf("count=%d\n",count);
+        }
+        else
+        {
+            count=0;
+            main++;
+        }
+    }
+    printf("count=%d\n",count);
+    if(count==strl) return main;
+    else return NULL;
 }
