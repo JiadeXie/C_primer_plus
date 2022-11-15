@@ -1,33 +1,35 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-int static_store=30;
-const char* pcg="String Literal";
+#include "pe12-2a.h"
 
 int main(void)
 {
-    int auto_store=40;
-    char auto_string[]="Auto char Array";
-    int* pi;
-    char* pcl;
+    //double* fuel;又是你呀，指针大哥。由于之前 double* fuel；是野指针并没有用变量来初始化，会导致它指向莫名其妙的地方，从而使程序崩溃。
+    //double* dist;
+    double* fuel=(double* )malloc(sizeof (double));
+    double* dist=(double* )malloc(sizeof (double));
 
-    pi=(int*) malloc(sizeof (int));
-    *pi=35;
-    pcl=(char*) malloc(strlen("Dynamic String")+1);
-    strcpy(pcl,"Dynamic String");
 
-    printf("static_store: %d at %p\n",static_store,&static_store);
-    printf("  auto_store: %d at %p\n",auto_store,&auto_store);
-    printf("        *pi: %d at %p\n", *pi,pi);
-    printf("  %s at %p\n",pcg,pcg);
-    printf(" %s at %p\n",auto_string,auto_string);
-    printf(" %s at %p\n",pcl,pcl);
-    printf(" %s at %p\n","Quoted String","Quoted String");
-    free(pi);
-    free(pcl);
+    int mode;
+    int mode_pe12;
 
+
+
+    printf("Enter 0 for metric mode,1 for US mode: \n");
+    scanf("%d",&mode);
+    while (mode>=0)
+    {
+        mode_pe12=set_mode(mode);
+        printf("dist=%p\n",dist);
+        printf("fuel=%p\n",fuel);
+        get_info(mode_pe12,dist,fuel);
+        show_info(mode_pe12,*dist,*fuel);
+        printf("Enter 0 for metric mode,1 for US mode: \n");
+        printf(" (-1 to quit): \n");
+        scanf("%d",&mode);
+    }
+    printf("Done.\n");
+    free(fuel);
+    free(dist);
     getchar();
     getchar();
     return 0;
 }
-
