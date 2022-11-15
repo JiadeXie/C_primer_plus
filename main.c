@@ -4,6 +4,7 @@
 int static_store=30;
 const char* pcg="String Literal";
 
+
 int main(void)
 {
     int auto_store=40;
