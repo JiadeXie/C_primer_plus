@@ -1,39 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include "diceroll.h"
 
 int main(void)
 {
-    int dice,roll;
-    int sides;
-    int status;
+    double* ptd;
+    int max;
+    int number;
+    int i=0;
 
-    srand((unsigned int) time(0));
-    printf("Enter the number of sides per die,0 to stop.\n");
-    while (scanf("%d",&sides)==1&&sides>0)
+    puts("What is the maximum number of type double entries?");
+    if(scanf("%d",&max)!=1)
     {
-        printf("How many dice?\n");
-        if((status= scanf("%d",&dice))!=1)
-        {
-            if(status==EOF) break;
-            else
-            {
-                printf("You should have entered an integer.");
-                printf("Let's begin again.\n");
-                while (getchar()!='\n') continue;
-                printf("How many sides? Enter 0 to stop.\n");
-                continue;
-            }
-        }
-        roll=roll_n_dice(dice,sides);
-        printf("You have rolled a %d using %d %d-sided dice.\n",
-               roll,dice,sides);
-        printf("How many sides? Enter 0 to stop.\n");
+        puts("Number not correctly entered -- bye.");
+        exit(EXIT_FAILURE);
     }
-    printf("The rollem() function was called %d times.\n",roll_count);
-    printf("GOOD FORTUNE TO YOU!\n");
+    ptd=(double *) malloc(max*sizeof (double));
+    if(ptd==NULL)
+    {
+        puts("Memory allocation failed.Goodbye.");
+        exit(EXIT_FAILURE);
+    }
+    puts("Enter the values (q to quit):");
+    while (i<max&& scanf("%lf",&ptd[i])==1) ++i;
+    printf("Here are your %d entries:\n",number=i);
+    for (i=0;i<number;i++)
+    {
+        printf("%7.2f",ptd[i]);
+        if(i%7==6) putchar('\n');
+    }
+    if(i%7!=0) putchar('\n');
+    puts("Done.\n");
+    free(ptd);
 
+    getchar();
     getchar();
     return 0;
 }
