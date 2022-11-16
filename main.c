@@ -1,28 +1,29 @@
 #include <stdio.h>
 #include <stdlib.h>
-int* make_array(int elem,int val);
-void show_array(const int ar[],int n);
 
-int main(void)
+int main(int argc,char* argv[])
 {
-    int* pa;
-    int size;
-    int value;
-
-    printf("Enter the number of elements: \n");
-    while (scanf("%d",&size)==1&&size>0)
+    int ch;
+    FILE *fp;
+    unsigned long count=0;
+    if(argc!=2)
     {
-        printf("Enter the initialization value: \n");
-        scanf("%d",&value);
-        pa= make_array(size,value);
-        if(pa)
-        {
-            show_array(pa,size);
-            free(pa);
-        }
-        printf("Enter the number of elements (<1 to quit): \n");
+        printf("Usage: %s filename\n",argv[0]);
+        exit(EXIT_FAILURE);
     }
-    printf("Done.\n");
+    if((fp= fopen(argv[1],"r"))==NULL)
+    {
+        printf("Can't open %s\n",argv[1]);
+        exit(EXIT_FAILURE);
+    }
+    while ((ch= getc(fp))!=EOF)
+    {
+        putc(ch,stdout);
+        count++;
+    }
+    fclose(fp);
+    putchar('\n');
+    printf("File %s has %lu characters\n",argv[1],count);
 
     return 0;
 }
