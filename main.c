@@ -1,29 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#define LEN 40
 
-int main(int argc,char* argv[])
-{
+int main(int argc,char* argv[]) {
+    FILE *in, *out;
     int ch;
-    FILE *fp;
-    unsigned long count=0;
-    if(argc!=2)
+    char name[LEN];
+    int count = 0;
+
+    if (argc < 2)
     {
-        printf("Usage: %s filename\n",argv[0]);
+        fprintf(stderr,"Usage: %s filename\n",argv[0]);
         exit(EXIT_FAILURE);
     }
-    if((fp= fopen(argv[1],"r"))==NULL)
+    if((in=fopen(argv[1],"r"))==NULL)
     {
-        printf("Can't open %s\n",argv[1]);
+        fprintf(stderr,"I couldn't open the file \"%s\"\n",argv[1]);
         exit(EXIT_FAILURE);
     }
-    while ((ch= getc(fp))!=EOF)
+    strncpy(name,argv[1],LEN-5);
+    name[LEN-5]='\0';
+    strcat(name,".red");
+    if((out=fopen(name,"w"))==NULL)
     {
-        putc(ch,stdout);
-        count++;
+        fprintf(stderr,"Can't create output file.\n");
+        exit(3);
     }
-    fclose(fp);
-    putchar('\n');
-    printf("File %s has %lu characters\n",argv[1],count);
+    while ((ch= getc(in))!=EOF)
+        if(count++%3==0) putc(ch,out);
+    if(fclose(in)!=0|| fclose(out)!=0)
+        fprintf(stderr,"Error in closing files\n");
 
     return 0;
 }
