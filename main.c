@@ -1,28 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#define MAX 41
+#define SLEN 81
+#define CNTL_Z '\032'
 
-int main(int argc,char* argv[])
+int main(void)
 {
+    char file[SLEN];
+    char ch;
     FILE *fp;
-    char words[MAX];
+    long count,last;
 
-    if((fp=fopen("wordy","a+"))==NULL)
+    puts("Enter the name of the file to be processed£º\n");
+    scanf("%80s",file);
+    if((fp=fopen(file,"rb"))==NULL)
     {
-        fprintf(stdout,"Can't open \"wordy\" file.\n");
+        printf("reverse can't open %s\n",file);
         exit(EXIT_FAILURE);
     }
 
-    puts("Enter words to add to the file; press the #");
-    puts("key at the beginning of a line to terminate.");
-    while ((fscanf(stdin,"%40s",words)==1)&&(words[0]!='#')) fprintf(fp,"%s\n",words);
-
-    puts("File contents:");
-    rewind(fp);
-    while (fscanf(fp, "%s",words)==1) puts(words);
-    puts("Done!");
-    if(fclose(fp)!=0) fprintf(stderr,"Error closing file\n");
+    fseek(fp,0L,SEEK_END);
+    last=ftell(fp);
+    for(count=1L;count<=last;count++)
+    {
+        fseek(fp,-count,SEEK_END);
+        ch=getc(fp);
+        if(ch!=CNTL_Z&&ch!='\r') putchar(ch);
+    }
+    putchar('\n');
+    fclose(fp);
 
     return 0;
 }
