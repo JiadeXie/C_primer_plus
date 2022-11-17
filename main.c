@@ -1,29 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int main(int argc,char* argv[])
+int main(void)
 {
     int ch;
+    char file[30];
     FILE *fp;
     unsigned long count=0;
-    if(argc!=2)
+
+    printf("please enter the file name.\n");
+    fgets(file,30,stdin);
+    count=strlen(file);
+    file[count-1]='\0';
+    count=0;
+    if((fp=fopen(file,"r"))==NULL)
     {
-        printf("Usage: %s filename\n",argv[0]);
+        printf("Can't open %s\n",file);
         exit(EXIT_FAILURE);
     }
-    if((fp= fopen(argv[1],"r"))==NULL)
-    {
-        printf("Can't open %s\n",argv[1]);
-        exit(EXIT_FAILURE);
-    }
-    while ((ch= getc(fp))!=EOF)
+    while ((ch=getc(fp))!=EOF)
     {
         putc(ch,stdout);
         count++;
     }
     fclose(fp);
     putchar('\n');
-    printf("File %s has %lu characters\n",argv[1],count);
+    printf("File %s has %lu characters\n",file,count);
+    getchar();
+    getchar();
 
     return 0;
 }
