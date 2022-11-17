@@ -1,43 +1,52 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define ARSIZE 1000
 
-int main(void)
+int main(int argc,char* argv[])
 {
-    double numbers[ARSIZE];
-    double value;
-    const char* file="numbers.dat";
-    int i;
-    long pos;
-    FILE *iofile;
+    double ar[50];
+    double total=0.0;
+    int count=0;
 
-    for (i=0;i<ARSIZE;i++)  numbers[i]=100.0*i+1.0/(i+1);
+    FILE* fp;
 
-    if((iofile= fopen(file,"wb"))==NULL)
+    //FILE* fp1;
+    //double ar1[50]={11.11,22.22,33.33,44.44,55.55,66.66,77.77,88.88,99.99,12.12,13.13,14.14,15.15,16.16,17.17,18.118};
+    //fp1= fopen("data1.dat","wb");
+    //fwrite(ar1, sizeof(double),16,fp1);
+
+
+    if(argc<1||argc>2)
     {
-        fprintf(stderr,"Could not open %s for output.\n",file);
+        puts("argc error.\n");
         exit(EXIT_FAILURE);
     }
-    fwrite(numbers,sizeof (double),ARSIZE,iofile);
-    fclose(iofile);
-    if((iofile= fopen(file,"rb"))==NULL)
+    if(argc==1)
     {
-        fprintf(stderr,"Could not open %s for random access.\n",file);
+        printf("please enter a numbers,%d numbers entered\n",0);
+        while (count<50&&(scanf("%lf",&ar[count]))==1)
+        {
+            total+=ar[count];
+            printf("please enter a numbers,%d numbers entered\n",++count);
+        }
+        printf("average is %f\n",total/count);
+        getchar();
+        getchar();
+        getchar();
+        getchar();
+
+        return 0;
+    }
+    if(argc==2&&(fp= fopen(argv[1],"rb"))==NULL)
+    {
+        printf("file name error.\n");
         exit(EXIT_FAILURE);
     }
+    count= fread(ar,sizeof (double),50,fp);
+    for (int i=0;i<count;i++) total+=ar[i];
+    printf("average is %f\n",total/count);
 
-    printf("Enter an index in the range 0-%d.\n",ARSIZE-1);
-    while (scanf("%d",&i)==1&&i>=0&&i<ARSIZE)
-    {
-        pos=(long)i*sizeof(double);
-        fseek(iofile,pos,SEEK_SET);
-        fread(&value,sizeof (double ),1,iofile);
-        printf("The value there is %f.\n",value);
-        printf("Next index (out of range to quit):\n");
-    }
-
-    fclose(iofile);
-    puts("Bye!");
+    getchar();
+    getchar();
 
     return 0;
 }
