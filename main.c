@@ -1,52 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#define BUFSIZE 4096
-#define SLEN 81
-
+#define LEN 40
 
 int main(void)
 {
-    int i=0;
-    FILE *fp;
-    char ar[SLEN];
-    char temp[BUFSIZE];
-    char ch;
+    FILE *in, *out;
+    int ch;
+    char name1[LEN];
+    char name2[LEN];
+    int count = 0;
 
-    printf("please enter the file name.\n");
-    fgets(ar,SLEN,stdin);
-    ar[strlen(ar)-1]='\0';
-    printf("%s\n",ar);
-    if ((fp=fopen(ar,"r"))==NULL)
+    printf("please enter the file name:\n");
+    fgets(name1,LEN,stdin);
+    name1[strlen(name1)-1]='\0';
+
+    if((in=fopen(name1,"r"))==NULL)
     {
-        printf("fp1 can not open %s file.\n",ar);
+        fprintf(stderr,"I couldn't open the file \"%s\"\n",name1);
         exit(EXIT_FAILURE);
     }
-    while (!feof(fp)) temp[i++]=fgetc(fp);
-    fclose(fp);
-    i=0;
-    if ((fp=fopen(ar,"w+"))==NULL)
+    strncpy(name2,name1,LEN-5);
+    name2[LEN-5]='\0';
+    strcat(name2,".red");
+    if((out=fopen(name2,"w"))==NULL)
     {
-        printf("fp2 can not open %s file.\n",ar);
-        exit(EXIT_FAILURE);
+        fprintf(stderr,"Can't create output file.\n");
+        exit(3);
     }
-    while (temp[i]!='\0')
-    {
-        temp[i]= toupper(temp[i]);
-        //putchar(temp[i]);
-        fputc(temp[i],fp);
-        i++;
-    }
-    rewind(fp);
-    while ((ch=getc(fp))!=EOF)
-    {
-        putchar(ch);
-    }
-    fclose(fp);
+    while ((ch= getc(in))!=EOF)
+        if(count++%3==0) putc(ch,out);
+    if(fclose(in)!=0|| fclose(out)!=0)
+        fprintf(stderr,"Error in closing files\n");
 
-    getchar();
-    getchar();
     return 0;
 }
-
