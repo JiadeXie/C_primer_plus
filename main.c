@@ -1,49 +1,51 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #define BUFSIZE 4096
 #define SLEN 81
 
 
-int main(int argc,char* argv[])
+int main(void)
 {
-    FILE *fs,*fd;
-    static char temp[BUFSIZE];
-    int bytes;
+    int i=0;
+    FILE *fp;
+    char ar[SLEN];
+    char temp[BUFSIZE];
+    char ch;
 
-    if(argc!=3)
+    printf("please enter the file name.\n");
+    fgets(ar,SLEN,stdin);
+    ar[strlen(ar)-1]='\0';
+    printf("%s\n",ar);
+    if ((fp=fopen(ar,"r"))==NULL)
     {
-        printf("argc error.\n");
+        printf("fp1 can not open %s file.\n",ar);
         exit(EXIT_FAILURE);
     }
-    if((fs= fopen(argv[1],"rb"))==NULL)
+    while (!feof(fp)) temp[i++]=fgetc(fp);
+    fclose(fp);
+    i=0;
+    if ((fp=fopen(ar,"w+"))==NULL)
     {
-        printf("can not open %s file,\n ",argv[1]);
+        printf("fp2 can not open %s file.\n",ar);
         exit(EXIT_FAILURE);
     }
-    if(setvbuf(fs,NULL,_IOFBF,BUFSIZE)!=0)
+    while (temp[i]!='\0')
     {
-        printf("Can't create input buffer\n",stderr);
-        exit(EXIT_FAILURE);
+        temp[i]= toupper(temp[i]);
+        //putchar(temp[i]);
+        fputc(temp[i],fp);
+        i++;
     }
-    if((fd= fopen(argv[2],"ab+"))==NULL)
+    rewind(fp);
+    while ((ch=getc(fp))!=EOF)
     {
-        printf("can not open %s file,\n ",argv[2]);
-        exit(EXIT_FAILURE);
+        putchar(ch);
     }
-    if(setvbuf(fd,NULL,_IOFBF,BUFSIZE)!=0)
-    {
-        printf("Can't create output buffer\n",stderr);
-        exit(EXIT_FAILURE);
-    }
-    while ((bytes= fread(temp,sizeof (char),BUFSIZE,fs))>0)
-        fwrite(temp,sizeof (char),bytes,fd);
-    printf("Copy done.\n");
-    printf("Destination file content:\n");
-    rewind(fd);
-    while ((bytes= fread(temp,sizeof (char),BUFSIZE,fd))>0)
-        fputs(temp,stdout);
-    putchar('\n');
+    fclose(fp);
 
+    getchar();
+    getchar();
     return 0;
 }
