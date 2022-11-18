@@ -2,36 +2,72 @@
 #include <stdlib.h>
 #include <string.h>
 #define LEN 40
+#define BUFFSIZE 256
 
 int main(void)
 {
-    FILE *in, *out;
-    int ch;
-    char name1[LEN];
-    char name2[LEN];
-    int count = 0;
+    FILE *fp1,*fp2;
+    char ar1[LEN];
+    char ar2[LEN];
+    char* temp1=(char*) malloc(BUFFSIZE*sizeof(char));
+    char* temp2=(char*) malloc(BUFFSIZE*sizeof(char));
 
-    printf("please enter the file name:\n");
-    fgets(name1,LEN,stdin);
-    name1[strlen(name1)-1]='\0';
-
-    if((in=fopen(name1,"r"))==NULL)
+    printf("Please enter the first file name:\n");
+    fgets(ar1,LEN,stdin);
+    ar1[strlen(ar1)-1]='\0';
+    printf("%s\n",ar1);
+    printf("Please enter the second file name:\n");
+    fgets(ar2,LEN,stdin);
+    ar2[strlen(ar2)-1]='\0';
+    printf("%s\n",ar2);
+    if((fp1=fopen(ar1,"r+"))==NULL)
     {
-        fprintf(stderr,"I couldn't open the file \"%s\"\n",name1);
+        printf("cannot open the first file.\n");
         exit(EXIT_FAILURE);
     }
-    strncpy(name2,name1,LEN-5);
-    name2[LEN-5]='\0';
-    strcat(name2,".red");
-    if((out=fopen(name2,"w"))==NULL)
+    if((fp2=fopen(ar2,"r+"))==NULL)
     {
-        fprintf(stderr,"Can't create output file.\n");
-        exit(3);
+        printf("cannot open second file.\n");
+        exit(EXIT_FAILURE);
     }
-    while ((ch= getc(in))!=EOF)
-        if(count++%3==0) putc(ch,out);
-    if(fclose(in)!=0|| fclose(out)!=0)
-        fprintf(stderr,"Error in closing files\n");
 
+    while (fgets(temp1,BUFFSIZE,fp1)!=NULL)
+    {
+        if(fgets(temp2,BUFFSIZE,fp2)!=NULL)
+        {
+            fputs(temp1,stdout);
+            fputs(temp2,stdout);
+        } else
+        {
+            fputs(temp1,stdout);
+        }
+    }
+    while (fgets(temp2,BUFFSIZE,fp2)!=NULL)  fputs(temp2,stdout);
+    printf("Print the combine line.\n");
+    rewind(fp1);
+    rewind(fp2);
+    int i=1;
+    while (fgets(temp1,BUFFSIZE,fp1)!=NULL)
+    {
+        if(fgets(temp2,BUFFSIZE,fp2)!=NULL)
+        {
+            printf("line no.%d :",i);
+            while (*temp1!='\n') putchar(*temp1++);
+            putchar('+');
+            printf("%s",temp2);
+            i++;
+        } else
+        {
+            printf("line no.%d : %s",i++,temp1);
+        }
+    }
+    while (fgets(temp2,BUFFSIZE,fp2)!=NULL)
+    {
+        printf("line no.%d : %s", i++,temp2);
+    }
+    fclose(fp1);
+    fclose(fp2);
+    getchar();
+    getchar();
     return 0;
 }
