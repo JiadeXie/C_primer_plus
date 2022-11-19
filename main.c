@@ -3,30 +3,30 @@
 #include <string.h>
 #define MAX 256
 
-int main(void)
+int main(int argc,char* argv[])
 {
-    FILE *fp;
-    char ar[MAX];
+    FILE* fp;
     char temp[MAX];
-    int num;
 
-    printf("please enter a file name.\n");
-    fgets(ar,MAX,stdin);
-    ar[strlen(ar)-1]='\0';
-    if((fp=fopen(ar,"r"))==NULL)
+    if(argc!=3)
     {
-        printf("cannot open file %s.\n",ar);
+        printf("argc error.\n");
         exit(EXIT_FAILURE);
     }
-    do
+    if((fp= fopen(argv[2],"r"))==NULL)
     {
-        printf("please enter the location(输入负数或字母退出).\n");
-        if((scanf("%d",&num))==0||num<0) break;
-        fseek(fp,num,SEEK_SET);
-        fgets(temp,MAX,fp);
-        printf("%s",temp);
+        printf("cannot open file %s.\n",argv[2]);
+        exit(EXIT_FAILURE);
+    }
+    while (fgets(temp,MAX,fp)!=NULL)
+    {
+        puts("enter loop\n");
+        if((strstr(temp,argv[1]))!=NULL)
+        {
+            printf("%s",temp);
+        }
+    }
 
-    } while (1);
     printf("Done.\n");
 
     return 0;
