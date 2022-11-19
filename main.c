@@ -1,33 +1,54 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 256
+#define ROW 20
+#define COL 30
 
-int main(int argc,char* argv[])
+int main(void)
 {
-    FILE* fp;
-    char temp[MAX];
+    int data[ROW][COL];
+    int i, j;
+    char file_in[30];
+    char file_out[30];
+    char convert[] = {' ', '.', '\'', '\"', '^', '*', '%', '$', '@', '#'};
+    FILE *in, *out;
 
-    if(argc!=3)
+    printf("please enter data file name:\n");
+    scanf("%s", file_in);
+    if ((in = fopen(file_in, "r")) == NULL)
     {
-        printf("argc error.\n");
+        printf("cannot open %s file.\n", file_in);
         exit(EXIT_FAILURE);
     }
-    if((fp= fopen(argv[2],"r"))==NULL)
+    printf("please enter graphic file name:\n");
+    scanf("%s", file_out);
+    if ((out = fopen(file_out, "w")) == NULL)
     {
-        printf("cannot open file %s.\n",argv[2]);
+        printf("cannot open %s file.\n", file_out);
         exit(EXIT_FAILURE);
     }
-    while (fgets(temp,MAX,fp)!=NULL)
+    for (i = 0; i < ROW; i++)
     {
-        puts("enter loop\n");
-        if((strstr(temp,argv[1]))!=NULL)
+        for (j = 0; j < COL; j++)
         {
-            printf("%s",temp);
+            fscanf(in,"%d",&data[i][j]);
         }
     }
+    for (i = 0; i < ROW; i++)
+    {
+        for (j = 0; j < COL; j++)
+        {
+            printf("%c",convert[data[i][j]]);
+            fprintf(out,"%c",convert[data[i][j]]);
+        }
+        printf("\n");
+        fprintf(out,"\n");
+    }
+    fclose(in);
+    fclose(out);
 
-    printf("Done.\n");
+    getchar();
+    getchar();
 
     return 0;
 }
