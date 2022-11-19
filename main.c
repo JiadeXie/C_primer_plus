@@ -1,39 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 41
-int getnumber(FILE*);
+#define MAX 256
 
-int main(int argc,char* argv[])
+int main(void)
 {
     FILE *fp;
-    int count;
-    char words[MAX];
+    char ar[MAX];
+    char temp[MAX];
+    int num;
 
-    if((fp=fopen("wordy","a+"))==NULL)
+    printf("please enter a file name.\n");
+    fgets(ar,MAX,stdin);
+    ar[strlen(ar)-1]='\0';
+    if((fp=fopen(ar,"r"))==NULL)
     {
-        fprintf(stdout,"Can't open \"wordy\" file.\n");
+        printf("cannot open file %s.\n",ar);
         exit(EXIT_FAILURE);
     }
-    rewind(fp);
-    count= getnumber(fp);
-    puts("Enter words to add to the file; press the #");
-    puts("key at the beginning of a line to terminate.");
-    while ((fscanf(stdin,"%40s",words)==1)&&(words[0]!='#')) fprintf(fp,"%d.%s\n",++count,words);
+    do
+    {
+        printf("please enter the location(输入负数或字母退出).\n");
+        if((scanf("%d",&num))==0||num<0) break;
+        fseek(fp,num,SEEK_SET);
+        fgets(temp,MAX,fp);
+        printf("%s",temp);
 
-    puts("File contents:");
-    rewind(fp);
-    while (fscanf(fp, "%s",words)==1) puts(words);
-    puts("Done!");
-    if(fclose(fp)!=0) fprintf(stderr,"Error closing file\n");
+    } while (1);
+    printf("Done.\n");
 
     return 0;
-}
-
-int getnumber(FILE* fp)
-{
-    int i=0;
-    char temp[MAX];
-    if(fgets(temp,MAX,fp)!=NULL) i++;
-    return i;
 }
