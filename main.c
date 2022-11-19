@@ -4,69 +4,49 @@
 #define LEN 40
 #define BUFFSIZE 256
 
-int main(void)
+int main(int argc,char *argv[])
 {
-    FILE *fp1,*fp2;
-    char ar1[LEN];
-    char ar2[LEN];
-    char* temp1=(char*) malloc(BUFFSIZE*sizeof(char));
-    char* temp2=(char*) malloc(BUFFSIZE*sizeof(char));
+    FILE *fp;
+    char ar[BUFFSIZE];
+    char ch;
+    int i=0;
+    int count=0;
 
-    printf("Please enter the first file name:\n");
-    fgets(ar1,LEN,stdin);
-    ar1[strlen(ar1)-1]='\0';
-    printf("%s\n",ar1);
-    printf("Please enter the second file name:\n");
-    fgets(ar2,LEN,stdin);
-    ar2[strlen(ar2)-1]='\0';
-    printf("%s\n",ar2);
-    if((fp1=fopen(ar1,"r+"))==NULL)
+    if(argc<2)
     {
-        printf("cannot open the first file.\n");
+        printf("argc error.\n");
         exit(EXIT_FAILURE);
     }
-    if((fp2=fopen(ar2,"r+"))==NULL)
+    if(argc==2)
     {
-        printf("cannot open second file.\n");
-        exit(EXIT_FAILURE);
-    }
-
-    while (fgets(temp1,BUFFSIZE,fp1)!=NULL)
-    {
-        if(fgets(temp2,BUFFSIZE,fp2)!=NULL)
+        ch=argv[1][0];
+        printf("please enter a string£º\n");
+        fgets(ar,BUFFSIZE,stdin);
+        while (ar[i]!='\0')
         {
-            fputs(temp1,stdout);
-            fputs(temp2,stdout);
-        } else
-        {
-            fputs(temp1,stdout);
-        }
-    }
-    while (fgets(temp2,BUFFSIZE,fp2)!=NULL)  fputs(temp2,stdout);
-    printf("Print the combine line.\n");
-    rewind(fp1);
-    rewind(fp2);
-    int i=1;
-    while (fgets(temp1,BUFFSIZE,fp1)!=NULL)
-    {
-        if(fgets(temp2,BUFFSIZE,fp2)!=NULL)
-        {
-            printf("line no.%d :",i);
-            while (*temp1!='\n') putchar(*temp1++);
-            putchar('+');
-            printf("%s",temp2);
+            if(ar[i]==ch) count++;
             i++;
-        } else
-        {
-            printf("line no.%d : %s",i++,temp1);
         }
+        printf("In string \"%s\",there are %d %c.\n",ar,count,ch);
     }
-    while (fgets(temp2,BUFFSIZE,fp2)!=NULL)
+    i=2;
+    while (i<argc)
     {
-        printf("line no.%d : %s", i++,temp2);
+        if((fp= fopen(argv[i],"r"))==NULL)
+        {
+            printf("cannot open file %s.\n",argv[i]);
+            exit(EXIT_FAILURE);
+        }
+        while ((ch= getc(fp))!=EOF)
+        {
+            if(ch==argv[1][0]) count++;
+        }
+        printf("In file \"%s\",there are %d %c.\n",argv[i],count,argv[1][0]);
+        count=0;
+        i++;
+        fclose(fp);
     }
-    fclose(fp1);
-    fclose(fp2);
+
     getchar();
     getchar();
     return 0;
