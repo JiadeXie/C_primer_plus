@@ -1,60 +1,50 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#define FUNDLEN 50
+#define N 2
 
-struct flex
+struct funds
 {
-    size_t count;
-    double average;
-    double scores[];//伸缩型数组成员
+    char bank[FUNDLEN];
+    double bankfund;
+    char save[FUNDLEN];
+    double savefund;
 };
 
-void showFlex(const struct flex* p);
+double sum(const struct funds money[],int n);
 
 int main(void)
 {
-    struct flex *pf1,*pf2;
-    int n=5;
-    int i;
-    int tot=0;
-
-    //为结构和数组分配存储空间
-    pf1=malloc(sizeof(struct flex)+n* sizeof(double ));
-    pf1->count=n;
-    for (i=0;i<n;i++)
-    {
-        pf1->scores[i]=20.0-i;
-        tot+=pf1->scores[i];
-    }
-    pf1->average=tot/n;
-    showFlex(pf1);
-
-    n=9;
-    tot=0;
-    pf2= malloc(sizeof(struct flex)+n* sizeof(double ));
-    pf2->count=n;
-    for (i=0;i<n;i++)
-    {
-        pf2->scores[i]=20.0-i/2.0;
-        tot+=pf2->scores[i];
-    }
-    pf2->average=tot/n;
-    showFlex(pf2);
-    free(pf1);
-    free(pf2);
+    struct funds jones[N]={
+            {
+                "Garlic-Melon Bank",
+                4032.27,
+                "Lucky's Savings and Loan",
+                8543.94
+            },
+            {
+                "Honest Jack's Bank",
+                3620.88,
+                "Party Time Savings",
+                3802.91
+            }
+    };
+    printf("The Joneses have a total of $%.2f.\n", sum(jones,N));
 
     getchar();
     getchar();
     return 0;
 }
 
-void showFlex(const struct flex *p)
+double sum(const struct funds money[],int n)
 {
+    double total;
     int i;
-    printf("Scores : ");
-    for (i=0;i<p->count;i++) printf("%g ",p->scores[i]);
-    printf("\nAverage: %g\n",p->average);
+    for (i=0,total=0;i<n;i++) total+=money[i].bankfund+money[i].savefund;
+    return (total);
 }
+
 
 char* s_gets(char *st,int n)
 {
