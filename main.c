@@ -1,44 +1,52 @@
 #include <stdio.h>
 #include <string.h>
 char* s_gets(char* st,int n);
-#define MAXTITL 40
-#define MAXAUTL 40
-#define MAXBKS 100
-
-struct book
+#define LEN 20
+const char* msgs[5]=
+        {
+        "     Thank you for the wonderful evening, ",
+        "You certainly prove that a ",
+        "is a special kind of guy. We must get together",
+        " and a delicious ",
+        " and have a few laughs"
+        };
+struct names
 {
-    char title[MAXTITL];
-    char author[MAXAUTL];
-    float value;
+    char first[LEN];
+    char last[LEN];
+};
+struct guy
+{
+    struct names handles;
+    char favfood[LEN];
+    char job[LEN];
+    float income;
 };
 
 int main(void)
 {
-    struct book library[MAXBKS];
-    int count=0;
-    int index;
+    struct guy fellow[2]=
+            {       {
+                    {"Ewen","Villard"},
+                    "grilled salmon",
+                    "personality coach",
+                    68112.00
+                    },
+                    {
+                    {"Rodney","Swillbelly"},
+                    "tripe",
+                    "tabloid editor",
+                    432400.00
+                    }
+            };
+    struct guy* him;
 
-    printf("please enter the book title.\n");
-    printf("press [enter] at the start of a line to stop.\n");
-    while (count<MAXBKS&& s_gets(library[count].title,MAXTITL)!=NULL&&library[count].title[0]!='\0')
-    {
-        printf("Now enter the author.\n");
-        s_gets(library[count].author,MAXAUTL);
-        printf("Now enter the value.\n");
-        scanf("%f",&library[count++].value);
-        while (getchar()!='\n') continue;
-        if(count<MAXBKS) printf("Enter the next title.\n");
-    }
-    if(count>0)
-    {
-        printf("Here is the list of your books:\n");
-        for (index = 0; index < count; ++index)
-        {
-            printf("%s by %s: $%.2f\n",library[count].title,library[count].author,library[count].value);
-        }
-    }
-    else printf("no books? too bad.\n");
-    printf("Done.\n");
+    printf("address #1: %p #2: %p\n",&fellow[0],&fellow[1]);
+    him=&fellow[0];
+    printf("pointer #1: %p #2: %p\n",him,him+1);
+    printf("him->income is $%.2f: (*him).income is $%.2f\n",him->income,(*him).income);
+    him++;
+    printf("him->favfood is %s: him->handle.last is %s\n",him->favfood,him->handles.last);
 
     getchar();
     getchar();
