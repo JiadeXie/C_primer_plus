@@ -11,7 +11,7 @@ struct funds
     double savefund;
 };
 
-double sum(double ,double );
+double sum(const struct funds *);
 
 int main(void)
 {
@@ -22,16 +22,16 @@ int main(void)
             8543.94
     };
     printf("Stan has a total of $%.2f.\n",
-           sum(stan.bankfund,stan.savefund));
+           sum(&stan));
 
     getchar();
     getchar();
     return 0;
 }
 
-double sum(double x,double y)
+double sum(const struct funds* money)
 {
-    return (x+y);
+    return (money->bankfund+money->savefund);
 }
 
 char* s_gets(char *st,int n)
