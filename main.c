@@ -1,56 +1,37 @@
 #include <stdio.h>
 #include <string.h>
 char* s_gets(char* st,int n);
-#define LEN 20
-const char* msgs[5]=
-        {
-        "     Thank you for the wonderful evening, ",
-        "You certainly prove that a ",
-        "is a special kind of guy. We must get together",
-        " and a delicious ",
-        " and have a few laughs"
-        };
-struct names
+#define FUNDLEN 50
+
+struct funds
 {
-    char first[LEN];
-    char last[LEN];
+    char bank[FUNDLEN];
+    double bankfund;
+    char savr[FUNDLEN];
+    double savefund;
 };
-struct guy
-{
-    struct names handles;
-    char favfood[LEN];
-    char job[LEN];
-    float income;
-};
+
+double sum(double ,double );
 
 int main(void)
 {
-    struct guy fellow[2]=
-            {       {
-                    {"Ewen","Villard"},
-                    "grilled salmon",
-                    "personality coach",
-                    68112.00
-                    },
-                    {
-                    {"Rodney","Swillbelly"},
-                    "tripe",
-                    "tabloid editor",
-                    432400.00
-                    }
-            };
-    struct guy* him;
-
-    printf("address #1: %p #2: %p\n",&fellow[0],&fellow[1]);
-    him=&fellow[0];
-    printf("pointer #1: %p #2: %p\n",him,him+1);
-    printf("him->income is $%.2f: (*him).income is $%.2f\n",him->income,(*him).income);
-    him++;
-    printf("him->favfood is %s: him->handle.last is %s\n",him->favfood,him->handles.last);
+    struct funds stan={
+            "Garlic-Melon bank",
+            4032.27,
+            "Lucky's Savings and Loan",
+            8543.94
+    };
+    printf("Stan has a total of $%.2f.\n",
+           sum(stan.bankfund,stan.savefund));
 
     getchar();
     getchar();
     return 0;
+}
+
+double sum(double x,double y)
+{
+    return (x+y);
 }
 
 char* s_gets(char *st,int n)
