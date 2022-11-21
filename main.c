@@ -1,37 +1,48 @@
 #include <stdio.h>
 #include <string.h>
-char* s_gets(char* st,int n);
-#define FUNDLEN 50
+#define NLEN 30
 
-struct funds
-{
-    char bank[FUNDLEN];
-    double bankfund;
-    char savr[FUNDLEN];
-    double savefund;
+struct namect{
+    char fname[NLEN];
+    char lname[NLEN];
+    int letters;
 };
 
-double sum(struct funds moolah);
+char* s_gets(char* st,int n);
+void getinfo(struct namect* pst);
+void makeinfo(struct namect* pst);
+void showinfo(const struct namect* pst);
 
 int main(void)
 {
-    struct funds stan={
-            "Garlic-Melon bank",
-            4032.27,
-            "Lucky's Savings and Loan",
-            8543.94
-    };
-    printf("Stan has a total of $%.2f.\n",
-           sum(stan));
+    struct namect person;
+
+    getinfo(&person);
+    makeinfo(&person);
+    showinfo(&person);
 
     getchar();
     getchar();
     return 0;
 }
 
-double sum(struct funds moolah)
+void getinfo(struct namect* pst)
 {
-    return (moolah.bankfund+moolah.savefund);
+    printf("please enter your first name.\n");
+    s_gets(pst->fname,NLEN);
+    printf("please enter your last name.\n");
+    s_gets(pst->lname,NLEN);
+}
+
+void makeinfo(struct namect* pst)
+{
+    pst->letters= strlen(pst->fname)+ strlen(pst->lname);
+}
+
+void showinfo(const struct namect* pst)
+{
+    printf("%s %s,your name contains %d letters.\n",
+           pst->fname,pst->lname,pst->letters);
 }
 
 char* s_gets(char *st,int n)
