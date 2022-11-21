@@ -1,52 +1,34 @@
 #include <stdio.h>
 #include <string.h>
-#define NLEN 30
+#define MAXTITL 41
+#define MAXAUTL 31
 
-struct namect{
-    char fname[NLEN];
-    char lname[NLEN];
-    int letters;
+struct book{
+    char title[MAXTITL];
+    char author[MAXAUTL];
+    float value;
 };
-
-char* s_gets(char* st,int n);
-struct namect getinfo(void);
-struct namect makeinfo(struct namect);
-void showinfo(struct namect);
 
 int main(void)
 {
-    struct namect person;
+    struct book readfirst;
+    int score;
 
-    person=getinfo();
-    person=makeinfo(person);
-    showinfo(person);
+    printf("Enter test score: ");
+    scanf("%d",&score);
+    if(score>=84)
+    {
+        readfirst=(struct book){"Crime and Punishment","Fyodor Dostoyevsky",11.25};
+    }
+    else readfirst=(struct book){"Mr.Bouncy's Nice Hat","Fred Winsome",5.99};
+    printf("Your assigned reading:\n");
+    printf("%s by %s: $%.2f\n",readfirst.title,readfirst.author,readfirst.value);
 
     getchar();
     getchar();
     return 0;
 }
 
-struct namect getinfo(void)
-{
-    struct namect temp;
-    printf("please enter your first name.\n");
-    s_gets(temp.fname,NLEN);
-    printf("please enter your last name.\n");
-    s_gets(temp.lname,NLEN);
-    return temp;
-}
-
-struct namect makeinfo(struct namect info)
-{
-    info.letters= strlen(info.fname)+ strlen(info.lname);
-    return info;
-}
-
-void showinfo(const struct namect info)
-{
-    printf("%s %s,your name contains %d letters.\n",
-           info.fname,info.lname,info.letters);
-}
 
 char* s_gets(char *st,int n)
 {
