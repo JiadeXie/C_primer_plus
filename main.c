@@ -1,54 +1,61 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#define ROW 20
-#define COL 30
+char* s_gets(char* st,int n);
+#define MAXTITL 40
+#define MAXAUTL 40
+#define MAXBKS 100
+
+struct book
+{
+    char title[MAXTITL];
+    char author[MAXAUTL];
+    float value;
+};
 
 int main(void)
 {
-    int data[ROW][COL];
-    int i, j;
-    char file_in[30];
-    char file_out[30];
-    char convert[] = {' ', '.', '\'', '\"', '^', '*', '%', '$', '@', '#'};
-    FILE *in, *out;
+    struct book library[MAXBKS];
+    int count=0;
+    int index;
 
-    printf("please enter data file name:\n");
-    scanf("%s", file_in);
-    if ((in = fopen(file_in, "r")) == NULL)
+    printf("please enter the book title.\n");
+    printf("press [enter] at the start of a line to stop.\n");
+    while (count<MAXBKS&& s_gets(library[count].title,MAXTITL)!=NULL&&library[count].title[0]!='\0')
     {
-        printf("cannot open %s file.\n", file_in);
-        exit(EXIT_FAILURE);
+        printf("Now enter the author.\n");
+        s_gets(library[count].author,MAXAUTL);
+        printf("Now enter the value.\n");
+        scanf("%f",&library[count++].value);
+        while (getchar()!='\n') continue;
+        if(count<MAXBKS) printf("Enter the next title.\n");
     }
-    printf("please enter graphic file name:\n");
-    scanf("%s", file_out);
-    if ((out = fopen(file_out, "w")) == NULL)
+    if(count>0)
     {
-        printf("cannot open %s file.\n", file_out);
-        exit(EXIT_FAILURE);
-    }
-    for (i = 0; i < ROW; i++)
-    {
-        for (j = 0; j < COL; j++)
+        printf("Here is the list of your books:\n");
+        for (index = 0; index < count; ++index)
         {
-            fscanf(in,"%d",&data[i][j]);
+            printf("%s by %s: $%.2f\n",library[count].title,library[count].author,library[count].value);
         }
     }
-    for (i = 0; i < ROW; i++)
-    {
-        for (j = 0; j < COL; j++)
-        {
-            printf("%c",convert[data[i][j]]);
-            fprintf(out,"%c",convert[data[i][j]]);
-        }
-        printf("\n");
-        fprintf(out,"\n");
-    }
-    fclose(in);
-    fclose(out);
+    else printf("no books? too bad.\n");
+    printf("Done.\n");
 
     getchar();
     getchar();
-
     return 0;
+}
+
+char* s_gets(char *st,int n)
+{
+    char* ret_val;
+    char* find;
+
+    ret_val= fgets(st,n,stdin);
+    if(ret_val)
+    {
+        find= strchr(st,'\n');
+        if(find) *find='\0';
+        else while (getchar()!='\n') continue;
+    }
+    return ret_val;
 }
