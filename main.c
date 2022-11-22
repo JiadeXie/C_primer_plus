@@ -29,28 +29,22 @@ MONTH year[12]={
 
 int main(void)
 {
-    char n[10];
-    int m=0;
-    int days=0;
-
-    printf("please enter month(输入回车退出).\n");
-    while ((s_gets1(n,10))!=NULL&&n[0]!='\0')
+    int y,m,d,total;
+    total=0;
+    printf("please enter the year,month and day.\n");
+    while(scanf("%d %d %d",&y,&m,&d)!=3||((m<1||m>12)||(d<1||d>31)) )
     {
-        while (strcmp(n,year[m].name)!=0&&m<12) m++;
-        if(m>=12)
-        {
-            printf("entry error,please try again.\n");
-        } else
-        {
-            for (int i = 0; i <=m ; ++i)
-            {
-                days+=year[i].days;
-            }
-            printf("there are %d days from 1 to %d month.\n",days,year[m].number);
-        }
-        days=0;
-        m=0;
+        printf("entry error,please try again.\n");
+        while (getchar()!='\n') continue;
     }
+    printf("year=%d,month=%d,day=%d\n",y,m,d);
+
+    for (int i = 0; i < m; ++i)
+    {
+        total+=year[i].days;
+    }
+    total+=d;
+    printf("there are %d days from the beginning of %d to %d.%d.%d.\n",total,y,y,m,d);
 
     puts("Bye!");
 
