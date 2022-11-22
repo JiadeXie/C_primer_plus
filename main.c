@@ -1,45 +1,42 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
+#include <ctype.h>
+#define LEN 81
 char* s_gets(char* st,int n);
-
-enum spectrum {red,orange,yellow,green,blue,violet};
-const char* colors[]={"red","orange","yellow","green","blue","violet"};
-#define LEN 30
+char showmenu(void);
+void eatline(void);
+void show(void(*fp)(char*),char* str);
+void ToUpper(char*);
+void ToLower(char *);
+void Transpose(char*);
+void Dummy(char*);
 
 int main(void)
 {
-    char choice[LEN];
-    enum spectrum color;
-    bool color_is_found=false;
+    char line[LEN];
+    char copy[LEN];
+    char choice;
+    void (*pfun)(char*);
 
-    puts("Enter a color (empty line to quit):");
-    while (s_gets(choice,LEN)!=NULL&&choice[0]!='\0')
+    puts("Enter a string (empty line to quit):");
+    while (s_gets(line,LEN)!=NULL&&line[0]!='\0')
     {
-        for (color=red;color<=violet;color++)
+        while ((choice=showmenu())!='n')
         {
-            if (strcmp(choice,colors[color])==0)
+            switch (choice)
             {
-                color_is_found=true;
-                break;
+                case 'u':pfun=ToUpper;break;
+                case 'l':pfun=ToLower;break;
+                case 't':pfun=Transpose;break;
+                case 'o':pfun=Dummy;break;
             }
+            strcpy(copy,line);
+            show(pfun,copy);
         }
-        if(color_is_found)
-            switch (color)
-            {
-                case red:puts("Roses are red.");break;
-                case orange:puts("poppies are orange.");break;
-                case yellow:puts("sunflowers are yellow.");break;
-                case green:puts("grass is green.");break;
-                case blue:puts("bluebells are blue.");break;
-                case violet:puts("violets are violet.");break;
-            }
-        else printf("I don't know about the color %s.\n",choice);
-        color_is_found=false;
-        puts("Next color,please (empty line to quit):");
+        puts("Enter a string (empty line to quit):");
     }
-    puts("Goodbye!");
+    puts("Bye!");
 
     getchar();
     getchar();
@@ -61,3 +58,62 @@ char* s_gets(char *st,int n)
     return ret_val;
 }
 
+char showmenu(void)
+{
+    char ans;
+    puts("Enter menu choice:");
+    puts("u) uppercase      l) lowercase");
+    puts("t) transposed     o) original case");
+    puts("n) next string");
+    ans= getchar();
+    ans= tolower(ans);
+    eatline();
+    while (strchr("ulton",ans)==NULL)
+    {
+        puts("please enter a u,l,t,o,or n:");
+        ans= tolower(getchar());
+        eatline();
+    }
+    return ans;
+}
+
+void eatline(void)
+{
+    while (getchar()!='\n') continue;
+}
+
+void ToUpper(char* str)
+{
+    while (*str)
+    {
+        *str= toupper(*str);
+        str++;
+    }
+}
+
+void ToLower(char* str)
+{
+    while (*str)
+    {
+        *str= tolower(*str);
+        str++;
+    }
+}
+
+void Transpose(char* str)
+{
+    while (*str)
+    {
+        if(islower(*str)) *str= toupper(*str);
+        else if (isupper(*str)) *str= tolower(*str);
+        str++;
+    }
+}
+
+void Dummy(char* str) {}
+
+void show(void(*fp)(char*),char* str)
+{
+    (*fp)(str);
+    puts(str);
+}
