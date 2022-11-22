@@ -4,37 +4,42 @@
 #include <ctype.h>
 #define LEN 81
 char* s_gets(char* st,int n);
-char showmenu(void);
-void eatline(void);
-void show(void(*fp)(char*),char* str);
-void ToUpper(char*);
-void ToLower(char *);
-void Transpose(char*);
-void Dummy(char*);
+
+typedef struct {
+    char name[10];
+    char shorname[4];
+    int days;
+    int number;
+}MONTH;
+
+MONTH year[12]={
+        {"January","Jan",31,1},
+        {"February","Feb",28,2},
+        {"March","Mar",31,3},
+        {"April","Apr",30,4},
+        {"May","May",31,5},
+        {"June","Jun",30,6},
+        {"July","Jul",31,7},
+        {"August","Aug",31,8},
+        {"September","Sep",30,9},
+        {"October","Oct",31,10},
+        {"November","Nov",30,11},
+        {"Decenber","Dec",31,12}
+};
 
 int main(void)
 {
-    char line[LEN];
-    char copy[LEN];
-    char choice;
-    void (*pfun)(char*);
-
-    puts("Enter a string (empty line to quit):");
-    while (s_gets(line,LEN)!=NULL&&line[0]!='\0')
+    int n;
+    int days;
+    printf("please enter a number(q to quit).\n");
+    while ((scanf("%d",&n))==1&&(n>=1&&n<=12))
     {
-        while ((choice=showmenu())!='n')
+        for (int i=0;i<n;i++)
         {
-            switch (choice)
-            {
-                case 'u':pfun=ToUpper;break;
-                case 'l':pfun=ToLower;break;
-                case 't':pfun=Transpose;break;
-                case 'o':pfun=Dummy;break;
-            }
-            strcpy(copy,line);
-            show(pfun,copy);
+            days+=year[i].days;
         }
-        puts("Enter a string (empty line to quit):");
+        printf("there are %d days from 1 to %d month.\n",days,n);
+        printf("please enter a number(q to quit).\n");
     }
     puts("Bye!");
 
@@ -56,64 +61,4 @@ char* s_gets(char *st,int n)
         else while (getchar()!='\n') continue;
     }
     return ret_val;
-}
-
-char showmenu(void)
-{
-    char ans;
-    puts("Enter menu choice:");
-    puts("u) uppercase      l) lowercase");
-    puts("t) transposed     o) original case");
-    puts("n) next string");
-    ans= getchar();
-    ans= tolower(ans);
-    eatline();
-    while (strchr("ulton",ans)==NULL)
-    {
-        puts("please enter a u,l,t,o,or n:");
-        ans= tolower(getchar());
-        eatline();
-    }
-    return ans;
-}
-
-void eatline(void)
-{
-    while (getchar()!='\n') continue;
-}
-
-void ToUpper(char* str)
-{
-    while (*str)
-    {
-        *str= toupper(*str);
-        str++;
-    }
-}
-
-void ToLower(char* str)
-{
-    while (*str)
-    {
-        *str= tolower(*str);
-        str++;
-    }
-}
-
-void Transpose(char* str)
-{
-    while (*str)
-    {
-        if(islower(*str)) *str= toupper(*str);
-        else if (isupper(*str)) *str= tolower(*str);
-        str++;
-    }
-}
-
-void Dummy(char* str) {}
-
-void show(void(*fp)(char*),char* str)
-{
-    (*fp)(str);
-    puts(str);
 }
