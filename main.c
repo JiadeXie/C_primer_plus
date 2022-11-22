@@ -3,27 +3,53 @@
 #include <stdlib.h>
 #include <ctype.h>
 #define LEN 81
-char* s_gets(char* st,int n);
+char* s_gets1(char* st,int n);
 
-typedef struct lens{
-    float foclen;
-    float fstop;
-    char brand[30];
-}LENS;
+typedef struct {
+    char name[10];
+    char shorname[4];
+    int days;
+    int number;
+}MONTH;
 
-
+MONTH year[12]={
+        {"January","Jan",31,1},
+        {"February","Feb",28,2},
+        {"March","Mar",31,3},
+        {"April","Apr",30,4},
+        {"May","May",31,5},
+        {"June","Jun",30,6},
+        {"July","Jul",31,7},
+        {"August","Aug",31,8},
+        {"September","Sep",30,9},
+        {"October","Oct",31,10},
+        {"November","Nov",30,11},
+        {"December","Dec",31,12}
+};
 
 int main(void)
 {
-    LENS arr[10]={[3]={600.0,3.0,"Xeon"}};
+    char n[10];
+    int m=0;
+    int days=0;
 
-    arr[2].foclen=500.0;
-    arr[2].fstop=2.0;
-    strcpy(arr[2].brand,"Rema");
-
-    for (int i = 2; i <=3; ++i) {
-        printf("arr[%d].foclen=%f,arr[%d].fstop=%f,arr[%d].brand=%s.\n",
-               i,arr[i].foclen,i,arr[i].fstop,i,arr[i].brand);
+    printf("please enter month(输入回车退出).\n");
+    while ((s_gets1(n,10))!=NULL&&n[0]!='\0')
+    {
+        while (strcmp(n,year[m].name)!=0&&m<12) m++;
+        if(m>=12)
+        {
+            printf("entry error,please try again.\n");
+        } else
+        {
+            for (int i = 0; i <=m ; ++i)
+            {
+                days+=year[i].days;
+            }
+            printf("there are %d days from 1 to %d month.\n",days,year[m].number);
+        }
+        days=0;
+        m=0;
     }
 
     puts("Bye!");
@@ -33,7 +59,7 @@ int main(void)
     return 0;
 }
 
-char* s_gets(char *st,int n)
+char* s_gets1(char *st,int n)
 {
     char* ret_val;
     char* find;
@@ -45,5 +71,7 @@ char* s_gets(char *st,int n)
         if(find) *find='\0';
         else while (getchar()!='\n') continue;
     }
+    st[0]= toupper(st[0]);
+    while (*(++st)!='\0') *st= tolower(*st);
     return ret_val;
 }
