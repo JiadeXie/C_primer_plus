@@ -1,62 +1,45 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define MAXTITL 40
-#define MAXAUTL 40
-#define MAXBKS 10
+#include <stdbool.h>
 char* s_gets(char* st,int n);
-struct book{
-    char title[MAXTITL];
-    char author[MAXAUTL];
-    float value;
-};
+
+enum spectrum {red,orange,yellow,green,blue,violet};
+const char* colors[]={"red","orange","yellow","green","blue","violet"};
+#define LEN 30
 
 int main(void)
 {
-    struct book library[MAXBKS];
-    int count=0;
-    int index,filecount;
-    FILE *pbooks;
-    int size= sizeof(struct book);
+    char choice[LEN];
+    enum spectrum color;
+    bool color_is_found=false;
 
-    if((pbooks= fopen("book.dat","a+b"))==NULL)
+    puts("Enter a color (empty line to quit):");
+    while (s_gets(choice,LEN)!=NULL&&choice[0]!='\0')
     {
-        fputs("Can't open book.dat file\n",stderr);
-        exit(1);
+        for (color=red;color<=violet;color++)
+        {
+            if (strcmp(choice,colors[color])==0)
+            {
+                color_is_found=true;
+                break;
+            }
+        }
+        if(color_is_found)
+            switch (color)
+            {
+                case red:puts("Roses are red.");break;
+                case orange:puts("poppies are orange.");break;
+                case yellow:puts("sunflowers are yellow.");break;
+                case green:puts("grass is green.");break;
+                case blue:puts("bluebells are blue.");break;
+                case violet:puts("violets are violet.");break;
+            }
+        else printf("I don't know about the color %s.\n",choice);
+        color_is_found=false;
+        puts("Next color,please (empty line to quit):");
     }
-    rewind(pbooks);
-    while (count<MAXBKS&& fread(&library[count],size,1,pbooks)==1)
-    {
-        if(count==0) puts("Current contents of book.dat:");
-        printf("%s by %s: $%.2f\n",library[count].title,library[count].author,library[count].value);
-        count++;
-    }
-    filecount=count;
-    if(count==MAXBKS)
-    {
-        fputs("The book.dat file is full.",stderr);
-        exit(2);
-    }
-
-    puts("please add new book titles.");
-    puts("press [enter] at the start of a line to stop.");
-    while (count<MAXBKS&& s_gets(library[count].title,MAXTITL)!=NULL&&library[count].title[0]!='\0')
-    {
-        puts("Now enter the author.");
-        s_gets(library[count].author,MAXAUTL);
-        puts("Now enter the value.");
-        scanf("%f",&library[count++].value);
-        while (getchar()!='\n') continue;
-        if(count<MAXBKS) puts("Enter the next title.");
-    }
-    if(count>0) {
-        puts("Here is the list of your books:");
-        for (index = 0; index < count; index++)
-            printf("%s by %s: $%.2f\n", library[index].title, library[index].author, library[count].value);
-        fwrite(&library[filecount], size, count - filecount, pbooks);
-    } else puts("No books? Too bad.\n");
-    puts("Bye.\n");
-    fclose(pbooks);
+    puts("Goodbye!");
 
     getchar();
     getchar();
