@@ -1,59 +1,57 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
-#define LEN 81
-char* s_gets1(char* st,int n);
-
-typedef struct {
-    char name[10];
-    char shorname[4];
-    int days;
-    int number;
-}MONTH;
-
-MONTH year[12]={
-        {"January","Jan",31,1},
-        {"February","Feb",28,2},
-        {"March","Mar",31,3},
-        {"April","Apr",30,4},
-        {"May","May",31,5},
-        {"June","Jun",30,6},
-        {"July","Jul",31,7},
-        {"August","Aug",31,8},
-        {"September","Sep",30,9},
-        {"October","Oct",31,10},
-        {"November","Nov",30,11},
-        {"December","Dec",31,12}
+#define MAXTITL 40
+#define MAXAUTL 40
+#define MAXBKS 100
+struct book
+{
+    char title[MAXTITL];
+    char author[MAXAUTL];
+    float value;
 };
+char* s_gets(char* st,int n);
+void zmsx(struct book*,int);
+void jgsx(struct book*,int);
 
 int main(void)
 {
-    int y,m,d,total;
-    total=0;
-    printf("please enter the year,month and day.\n");
-    while(scanf("%d %d %d",&y,&m,&d)!=3||((m<1||m>12)||(d<1||d>31)) )
+    struct book library[MAXBKS];
+    int count=0;
+    int index;
+
+    printf("please enter the book title.\n");
+    printf("press [enter] at the start of a line to stop.\n");
+    while (count<MAXBKS&& s_gets(library[count].title,MAXTITL)!=NULL&&library[count].title[0]!='\0')
     {
-        printf("entry error,please try again.\n");
+        printf("Now enter the author.\n");
+        s_gets(library[count].author,MAXAUTL);
+        printf("Now enter the value.\n");
+        scanf("%f",&library[count++].value);
         while (getchar()!='\n') continue;
+        if(count<MAXBKS) printf("Enter the next title.\n");
     }
-    printf("year=%d,month=%d,day=%d\n",y,m,d);
-
-    for (int i = 0; i < m; ++i)
+    if(count>0)
     {
-        total+=year[i].days;
+        printf("Here is the list of your books:\n");
+        for (index = 0; index < count; index++)
+        {
+            printf("%s by %s: $%.2f\n",library[index].title,library[index].author,library[index].value);
+        }
+        putchar('\n');
+        printf("zmsx:\n\n");
+        zmsx(library,count);//书名升序输出
+        printf("jgsx:\n\n");
+        jgsx(library,count);//价格升序输出
     }
-    total+=d;
-    printf("there are %d days from the beginning of %d to %d.%d.%d.\n",total,y,y,m,d);
-
-    puts("Bye!");
+    else printf("no books? too bad.\n");
+    printf("Done.\n");
 
     getchar();
     getchar();
     return 0;
 }
 
-char* s_gets1(char *st,int n)
+char* s_gets(char *st,int n)
 {
     char* ret_val;
     char* find;
@@ -65,7 +63,45 @@ char* s_gets1(char *st,int n)
         if(find) *find='\0';
         else while (getchar()!='\n') continue;
     }
-    st[0]= toupper(st[0]);
-    while (*(++st)!='\0') *st= tolower(*st);
     return ret_val;
+}
+
+void zmsx(struct book* b,int n)
+{
+    struct book temp[n+1];
+    for (int i = 0; i < n; ++i)  temp[i]=b[i];
+    for (int i = 0; i < n-1; ++i)
+    {
+        for (int j=i+1;j<n;++j)
+        {
+            if((strcmp(temp[i].title,temp[j].title))>0)
+            {
+                temp[n]=temp[i];
+                temp[i]=temp[j];
+                temp[j]=temp[n];
+            }
+        }
+    }
+    for (int k= 0; k < n; k++)  printf("%s by %s: $%.2f\n",temp[k].title,temp[k].author,temp[k].value);
+
+}
+
+
+void jgsx(struct book* b,int n)
+{
+    struct book temp[n+1];
+    for (int i = 0; i < n; ++i)  temp[i]=b[i];
+    for (int i = 0; i < n-1; ++i)
+    {
+        for (int j=i+1;j<n;++j)
+        {
+            if(temp[i].value>temp[j].value)
+            {
+                temp[n]=temp[i];
+                temp[i]=temp[j];
+                temp[j]=temp[n];
+            }
+        }
+    }
+    for (int k= 0; k < n; k++)  printf("%s by %s: $%.2f\n",temp[k].title,temp[k].author,temp[k].value);
 }
