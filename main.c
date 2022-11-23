@@ -1,36 +1,63 @@
 #include <stdio.h>
 #include <string.h>
-#define MAXTITL 40
-#define MAXAUTL 40
-#define MAXBKS 100
-struct fullname
-{
-    char name[15];
-    char midname[10];
+#define CSIZE 4
+struct name{
+    char ming[20];
     char xing[10];
 };
-struct secnumber
-{
-    char number[20];
-    struct fullname name;
+struct student{
+    struct name n;
+    double grade[3];
+    double average;
 };
-char* s_gets(char* st,int n);
-void qqq(struct secnumber* num,int n);
+//char* s_gets(char* st,int n);
+double average(double a,double b,double c);
+void ppp(struct student*,int);
+
 
 int main(void)
 {
-    int n=5;
-    struct secnumber ar[5]=
-    {
-            {"302039823",{"Dribble","","Flossie"}},
-            {"302039824",{"Dribblf","","Flossif"}},
-            {"302039825",{"Dribblg","Mddf","Flossig"}},
-            {"302039826",{"Dribblh","","Flossih"}},
-            {"302039827",{"Dribbli","Mddh","Flossii"}},
-    };
-    printf("%S\n",ar[1].name.midname);
-    qqq(ar,n);
+    char m[20];
+    char x[10];
+    int seek;
+    int count=0;
+    double class_ave;
+    struct student st[CSIZE]=
+            {
+                    [0]={"san","zhang"},
+                    [1]={"si","li"},
+                    [2]={"wu","wang"},
+                    [3]={"liu","zhao"}
+            };
 
+    do
+    {
+        seek=0;
+        printf("please enter your Ãû,ÐÕ(ÊäÈë#ÍË³ö)\n");
+        scanf("%s",m);
+        if(m[0]=='#') break;
+        scanf("%s",x);
+        while ((strcmp(x,st[seek].n.xing)!=0)&&(strcmp(m,st[seek].n.ming)!=0)&&seek<4) seek++;
+        if(seek>=4)
+        {
+            seek=0;
+            printf("entry error,please try again.\n");
+            continue;
+        } else
+        {
+            printf("please enter class_1,class_2,class_3 score.\n");
+            scanf("%lf %lf %lf",&st[seek].grade[0],&st[seek].grade[1],&st[seek].grade[2]);
+        }
+        count++;
+    } while (count!=CSIZE);
+    for (int i = 0; i < CSIZE; ++i)
+    {
+        st[i].average=average(st[i].grade[0],st[i].grade[1],st[i].grade[2]);
+    }
+    ppp(st,CSIZE);
+    class_ave=(st[0].average+st[1].average+st[2].average+st[3].average)/4.0;
+    printf("class_average=%.2f\n",class_ave);
+    puts("Done!\n");
 
     getchar();
     getchar();
@@ -52,13 +79,16 @@ char* s_gets(char *st,int n)
     return ret_val;
 }
 
-void qqq(struct secnumber *num, int n){
-               for (int i = 0; i < n; ++i)
-               {
-                        if(strlen(num[i].name.midname)>0) printf("%s, %s %c. -- %s\n",
-                                                      num[i].name.name,num[i].name.xing,num[i].name.midname[0],num[i].number);
-                        else printf("%s, %s -- %s\n",
-                                     num[i].name.name,num[i].name.xing,num[i].number);
+double average(double a,double b,double c)
+{
+    return (a+b+c)/3.0;
+}
 
-                }
+void ppp(struct student* st,int n)
+{
+    for(int i=0;i<n;i++)
+    {
+        printf("%s %s: class_1=%.2f,class_2=%.2f,class_3=%.2f,average=%.2f\n",
+              st[i].n.ming,st[i].n.xing,st[i].grade[0],st[i].grade[1],st[i].grade[2],st[i].average);
+    }
 }
