@@ -1,28 +1,47 @@
 #include <stdio.h>
-#include <string.h>
-#include <limits.h>//提供CHAR_BIT的定义，CHAR_BIT表示每字节的位数
-char* itobs(int,char*);
-void show_bstr(const char*);
-int invert_end(int num,int bits);
+#include <stdbool.h>
+
+/*线的样式*/
+#define SOLID 0
+#define DOTTED 1
+#define DASHED 2
+/*三原色*/
+#define BLUE 4
+#define GREEN 2
+#define RED 1
+/*混合色*/
+#define BLACK 0
+#define YELLOW (RED|GREEN)
+#define MAGENTA (RED|BLUE)
+#define CYAN (GREEN|BLUE)
+#define WHITE (RED|GREEN|BLUE)
+
+const char* colors[8]={"black","red","green","yellow","blue","magenta","cyan","white"};
+
+struct box_props
+{
+    bool opaque :1;
+    unsigned int fill_color :3;
+    unsigned int :4;
+    bool show_border :1;
+    unsigned int border_color:3;
+    unsigned int border_style:2;
+    unsigned int :2;
+};
+
+void show_settings(const struct box_props* pb);
 
 int main(void)
 {
-    char bin_str[CHAR_BIT* sizeof(int)+1];
-    int number;
-
-    puts("Enter integers and see them in binary.\n");
-    puts("Non-numeric input terminates program.");
-    while (scanf("%d",&number)==1)
-    {
-        itobs(number,bin_str);
-        printf("%d is\n",number);
-        show_bstr(bin_str);
-        putchar('\n');
-        number= invert_end(number,4);
-        printf("Inverting the last 4 bits gives\n");
-        show_bstr(itobs(number,bin_str));
-        putchar('\n');
-    }
+    struct box_props box={true,YELLOW,true,GREEN,DASHED};
+    printf("Original box settings:\n");
+    show_settings(&box);
+    box.opaque=false;
+    box.fill_color=WHITE;
+    box.border_color=MAGENTA;
+    box.border_style=SOLID;
+    printf("\nModified box settings:\n");
+    show_settings(&box);
 
     puts("Done!\n");
     getchar();
@@ -30,38 +49,21 @@ int main(void)
     return 0;
 }
 
-char* itobs(int n,char* ps)
+void show_settings(const struct box_props* pb)
 {
-    int i;
-    const static int size=CHAR_BIT* sizeof(int);
-    for (i=size-1;i>=0;i--,n>>=1)  ps[i]=(01&n)+'0';
-    ps[size]='\0';
-
-    return ps;
-}
-
-void show_bstr(const char* str)//4位一组现实二进制字符串
-{
-    int i=0;
-    while(str[i])
+    printf("Box is %s.\n",
+           pb->opaque==true?"opaque":"transparent");
+    printf("The fill color is %s.\n",colors[pb->fill_color]);
+    printf("Border %s.\n",pb->show_border==true?"shown":"not shown");
+    printf("The border color is %s.\n",colors[pb->border_color]);
+    printf("The border style is ");
+    switch (pb->border_style)
     {
-        putchar(str[i]);
-        if(++i%4==0&&str[i])
-            putchar(' ');
+        case SOLID:printf("solid.\n");break;
+        case DOTTED:printf("dotted.\n");break;
+        case DASHED:printf("dashed.\n");break;
+        default:    printf("unknow type.\n");
     }
-}
-
-int invert_end(int num,int bits)
-{
-    int mask=0;
-    int bitval=1;
-
-    while (bits-- >0)
-    {
-        mask|=bitval;
-        bitval<<=1;
-    }
-    return num^mask;
 }
 
 char* s_gets(char *st,int n)
@@ -72,7 +74,7 @@ char* s_gets(char *st,int n)
     ret_val= fgets(st,n,stdin);
     if(ret_val)
     {
-        find= strchr(st,'\n');
+        //find= strchr(st,'\n');
         if(find) *find='\0';
         else while (getchar()!='\n') continue;
     }
