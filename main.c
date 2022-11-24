@@ -3,6 +3,7 @@
 #include <limits.h>//提供CHAR_BIT的定义，CHAR_BIT表示每字节的位数
 char* itobs(int,char*);
 void show_bstr(const char*);
+int invert_end(int num,int bits);
 
 int main(void)
 {
@@ -14,8 +15,12 @@ int main(void)
     while (scanf("%d",&number)==1)
     {
         itobs(number,bin_str);
-        printf("%d is ",number);
+        printf("%d is\n",number);
         show_bstr(bin_str);
+        putchar('\n');
+        number= invert_end(number,4);
+        printf("Inverting the last 4 bits gives\n");
+        show_bstr(itobs(number,bin_str));
         putchar('\n');
     }
 
@@ -44,6 +49,19 @@ void show_bstr(const char* str)//4位一组现实二进制字符串
         if(++i%4==0&&str[i])
             putchar(' ');
     }
+}
+
+int invert_end(int num,int bits)
+{
+    int mask=0;
+    int bitval=1;
+
+    while (bits-- >0)
+    {
+        mask|=bitval;
+        bitval<<=1;
+    }
+    return num^mask;
 }
 
 char* s_gets(char *st,int n)
