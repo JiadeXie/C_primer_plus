@@ -8,17 +8,47 @@ int openbits(int);
 int checkbit(int,int);
 int rotate_l(int,int);
 
+struct word{
+    unsigned int word_id:8;
+    unsigned int word_size:7;
+    unsigned int duiqi:2;
+    unsigned int jiacu:1;
+    unsigned int xieti:1;
+    unsigned int underline:1;
+};
+struct word sample={1,12,0,0,0,0};
+const char w_dq[][7]={"left","middle","right"};
+const char on_off[][4]={"off","on"};
+
+void show(void);
+void change_id(void);
+void change_size(void);
+void change_duiqi(void);
+void change_jiacu(void);
+void change_xieti(void);
+void chang_underline(void);
+
 int main(void)
 {
-    char ch[CHAR_BIT* sizeof(int)+1];
-    int n,m,k;
-    printf("please enter two number:\n");
-    scanf("%d %d",&n,&m);
-    itob(n,ch);
-    k= rotate_l(n,m);
-    printf("before rotate_l,n=%d=%s\n",n, ch);
-    itob(k,ch);
-    printf("after rotate_l,n=%d=%s\n",n, ch);
+    char ch;
+
+    do
+    {
+        show();
+        ch=getchar();
+        switch (ch)
+        {
+            case 'f':change_id();break;
+            case 's':change_size();break;
+            case 'a':change_duiqi();break;
+            case 'b':change_jiacu();break;
+            case 'i':change_xieti();break;
+            case 'u':chang_underline();break;
+            case 'q':break;
+            default :printf("entry error,please try again.\n");break;
+        }
+        while (getchar()!='\n') continue;
+    }while(ch!='q');
 
     puts("Done!\n");
     getchar();
@@ -111,4 +141,77 @@ int rotate_l(int a,int length)
         } else a<<=1;
     }
     return a;
+}
+
+void show(void)
+{
+    printf("ID SIZE ALIGNMENT  B   I   U\n");
+    printf("%-2d %-2d   %-10s%-3s %-3s %-3s\n",
+           sample.word_id,sample.word_size,w_dq[sample.duiqi],
+           on_off[sample.jiacu],on_off[sample.xieti],on_off[sample.underline]);
+
+    printf("f)change font\ts)change size\ta)change alignment\n");
+    printf("b)toggle bold\ti)toggle italic\tu)toggle underline\n");
+    printf("q)quit\n");
+}
+
+void change_size(void)
+{
+    unsigned int size;
+    printf("enter font size(0-127):\n");
+    scanf("%d",&size);
+    if(size<0||size>127)
+    {
+        printf("entry error,program exits.\n");
+        exit(EXIT_FAILURE);
+    }
+    sample.word_size=size;
+}
+
+void change_duiqi(void)
+{
+    while (getchar()!='\n') continue;
+    char ch;
+    printf("Select alignment:\n");
+    printf("l)left   \tm)middle\tr)right\n");
+    ch=getchar();
+    if(ch=='l') sample.duiqi=0;
+    else if(ch=='m') sample.duiqi=1;
+    else if(ch=='r') sample.duiqi=2;
+    else
+    {
+        printf("entry error,program exits.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void change_xieti(void)
+{
+    if(sample.xieti==1) sample.xieti=0;
+    else if(sample.xieti==0) sample.xieti=1;
+}
+
+void change_jiacu(void)
+{
+    if(sample.jiacu==1) sample.jiacu=0;
+    else if(sample.jiacu==0) sample.jiacu=1;
+}
+
+void chang_underline(void)
+{
+    if(sample.underline==1) sample.underline=0;
+    else if(sample.underline==0) sample.underline=1;
+}
+
+void change_id(void)
+{
+    unsigned int temp;
+    printf("please enter font(0-255):\n");
+    scanf("%d",&temp);
+    if(temp<0||temp>255)
+    {
+        printf("entry error,program exits.\n");
+        exit(EXIT_FAILURE);
+    }
+    sample.word_id=temp;
 }
