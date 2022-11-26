@@ -5,13 +5,14 @@
 int btoi(char*);
 void itob(int,char*);
 int openbits(int);
+int checkbit(int,int);
 
 int main(void)
 {
-    int a,b;
-    printf("please enter a number.\n");
-    scanf("%d",&a);
-    printf("%d open %d bits.\n",a, openbits(a));
+    int n,m;
+    printf("please enter two number:\n");
+    scanf("%d %d",&n,&m);
+    printf("%d\n",checkbit(n,m));
 
     puts("Done!\n");
     getchar();
@@ -83,4 +84,11 @@ int openbits(int n)
     }
     printf("%s\n",temp);
     return c;
+}
+
+int checkbit(int a,int b)
+{
+    int temp= pow(2,b-1);
+    if(temp==(a&temp)) return 1;
+    else return 0;
 }
