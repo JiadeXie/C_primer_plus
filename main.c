@@ -6,13 +6,19 @@ int btoi(char*);
 void itob(int,char*);
 int openbits(int);
 int checkbit(int,int);
+int rotate_l(int,int);
 
 int main(void)
 {
-    int n,m;
+    char ch[CHAR_BIT* sizeof(int)+1];
+    int n,m,k;
     printf("please enter two number:\n");
     scanf("%d %d",&n,&m);
-    printf("%d\n",checkbit(n,m));
+    itob(n,ch);
+    k= rotate_l(n,m);
+    printf("before rotate_l,n=%d=%s\n",n, ch);
+    itob(k,ch);
+    printf("after rotate_l,n=%d=%s\n",n, ch);
 
     puts("Done!\n");
     getchar();
@@ -64,7 +70,7 @@ void itob(int n,char * b)
         copy>>=1;
     }
     b[size]='\0';
-    printf("%d=%s\n",n,b);
+    //printf("%d=%s\n",n,b);
 }
 
 int openbits(int n)
@@ -91,4 +97,18 @@ int checkbit(int a,int b)
     int temp= pow(2,b-1);
     if(temp==(a&temp)) return 1;
     else return 0;
+}
+
+int rotate_l(int a,int length)
+{
+    const static int size=CHAR_BIT* sizeof(int);
+    for (int i = 0; i < length; ++i)
+    {
+        if((a&(1<<size-1)))//先读取将要被移出的数据，即把最高位设置为1，并与n进行与操作，
+        {                  //若结果为1，则移位，并在左侧置1；若结果为零，则直接移位。
+            a<<=1;
+            a|=1;
+        } else a<<=1;
+    }
+    return a;
 }
