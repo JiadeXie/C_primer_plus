@@ -4,46 +4,14 @@
 #include <math.h>
 int btoi(char*);
 void itob(int,char*);
+int openbits(int);
 
-int main(int argc,char* argv[])
+int main(void)
 {
-    if(argc!=3)
-    {
-        printf("argument error.\n");
-        exit(EXIT_FAILURE);
-    }
-
-    int n;
-    int n1;
-    char str[CHAR_BIT* sizeof(int)+1];
-
-    n=btoi(argv[1]);
-    printf("~%d=",n);
-    n=~n;
-    itob(n,str);
-
-    n=btoi(argv[2]);
-    printf("~%d=",n);
-    n=~n;
-    itob(n,str);
-
-    n= btoi(argv[1]);
-    n1= btoi(argv[2]);
-    printf("%d&%d=",n,n1);
-    n=n&n1;
-    itob(n,str);
-
-    n= btoi(argv[1]);
-    n1= btoi(argv[2]);
-    printf("%d|%d=",n,n1);
-    n=n|n1;
-    itob(n,str);
-
-    n= btoi(argv[1]);
-    n1= btoi(argv[2]);
-    printf("%d^%d=",n,n1);
-    n=n^n1;
-    itob(n,str);
+    int a,b;
+    printf("please enter a number.\n");
+    scanf("%d",&a);
+    printf("%d open %d bits.\n",a, openbits(a));
 
     puts("Done!\n");
     getchar();
@@ -96,5 +64,23 @@ void itob(int n,char * b)
     }
     b[size]='\0';
     printf("%d=%s\n",n,b);
-    return ;
+}
+
+int openbits(int n)
+{
+    int c=0;
+    const static int  size=CHAR_BIT*sizeof(int);
+    char temp[size+1];
+    for (int i = size-1; i >=0; i--)
+    {
+        temp[i]=(01&n)+48;
+        n>>=1;
+    }
+    temp[size]='\0';
+    for (int i = 0; i < size; ++i)
+    {
+        if(temp[i]==49) c++;
+    }
+    printf("%s\n",temp);
+    return c;
 }
