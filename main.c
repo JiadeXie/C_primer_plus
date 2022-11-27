@@ -2,33 +2,38 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#define RAD_TO_DEG (180/(4*atan(1)))  //相当于180/PI
+#define RAD_TO_DEG (180/(4*atanl(1)))  //相当于180/PI
 
-typedef struct polar_v
-{
-    double magnitude;
-    double angle;
-}Polar_V;
+//泛型平方根函数
+#define SQRT(X) _Generic((X),\
+long double :sqrtl,\
+default:sqrt,\
+float :sqrtf)(X)
 
-typedef struct rect_v
-{
-    double x;
-    double y;
-}Rect_V;
-
-Polar_V rect_to_polar(Rect_V);
+//泛型正弦函数，角度的单位为度
+#define SIN(X) _Generic((X),\
+long double :sinl((X)/RAD_TO_DEG),\
+default: sin((X)/RAD_TO_DEG),\
+float : sinf((X)/RAD_TO_DEG)\
+)
 
 int main(void)
 {
-    Rect_V input;
-    Polar_V result;
+    float x=45.0f;
+    double xx=45.0;
+    long double xxx=45.0L;
 
-    puts("Enter x and y coordinates;enter q to quit:");
-    while (scanf("%lf %lf",&input.x,&input.y)==2)
-    {
-        result= rect_to_polar(input);
-        printf("magnitude=%0.2f,angle=%0.2f\n",result.magnitude,result.angle);
-    }
+    long double y=SQRT(x);
+    long double yy=SQRT(xx);
+    long double yyy=SQRT(xxx);
+    printf("%.17Lf\n",y);
+    printf("%.17Lf\n",yy);
+    printf("%.17Lf\n",yyy);
+    int i=45;
+    yy=SQRT(i);
+    printf("%.17Lf\n",yy);
+    yyy= SIN(xxx);
+    printf("%.17Lf\n",yyy);
 
     puts("Done!\n");
     getchar();
@@ -36,12 +41,3 @@ int main(void)
     return 0;
 }
 
-Polar_V rect_to_polar(Rect_V rv)
-{
-    Polar_V pv;
-
-    pv.magnitude= sqrt(rv.x*rv.x+rv.y*rv.y);
-    if(pv.magnitude==0) pv.angle=0.0;
-    else pv.angle=RAD_TO_DEG* atan2(rv.y,rv.x);
-    return pv;
-}
