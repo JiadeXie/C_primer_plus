@@ -2,38 +2,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#define RAD_TO_DEG (180/(4*atanl(1)))  //相当于180/PI
 
-//泛型平方根函数
-#define SQRT(X) _Generic((X),\
-long double :sqrtl,\
-default:sqrt,\
-float :sqrtf)(X)
-
-//泛型正弦函数，角度的单位为度
-#define SIN(X) _Generic((X),\
-long double :sinl((X)/RAD_TO_DEG),\
-default: sin((X)/RAD_TO_DEG),\
-float : sinf((X)/RAD_TO_DEG)\
-)
+#define NUM 40
+void fillarray(double ar[],int n);
+void showarray(const double ar[],int n);
+int mycomp(const void *p1,const void * p2);
 
 int main(void)
 {
-    float x=45.0f;
-    double xx=45.0;
-    long double xxx=45.0L;
+    double vals[NUM];
+    fillarray(vals,NUM);
+    puts("Random list:");
+    showarray(vals,NUM);
+    qsort(vals,NUM, sizeof(double),mycomp);
+    puts("\nSorted list:");
+    showarray(vals,NUM);
 
-    long double y=SQRT(x);
-    long double yy=SQRT(xx);
-    long double yyy=SQRT(xxx);
-    printf("%.17Lf\n",y);
-    printf("%.17Lf\n",yy);
-    printf("%.17Lf\n",yyy);
-    int i=45;
-    yy=SQRT(i);
-    printf("%.17Lf\n",yy);
-    yyy= SIN(xxx);
-    printf("%.17Lf\n",yyy);
 
     puts("Done!\n");
     getchar();
@@ -41,3 +25,31 @@ int main(void)
     return 0;
 }
 
+void fillarray(double ar[],int n)
+{
+    int index;
+
+    for(index=0;index<n;index++)
+        ar[index]=(double)rand()/((double)rand()+0.1);
+}
+
+void showarray(const double ar[],int n)
+{
+    int index;
+
+    for (index=0;index<n;index++)
+    {
+        printf("%9.4f ",ar[index]);
+        if(index%6==5) putchar('\n');
+    }
+    if(index%6!=0) putchar('\n');
+}
+
+int mycomp(const void * p1,const void  * p2)
+{
+    const double * a1=(const double *)p1;
+    const double * a2=(const double *)p2;
+    if(*a1<*a2) return -1;
+    else if(*a1==*a2) return 0;
+    else return 1;
+}
