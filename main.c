@@ -1,20 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <stdarg.h>
-double sum(int,...);
+int cmp(const void *p1,const void *p2);
 
 int main(void)
 {
-    double s,t;
-
-    s= sum(3,1.1,2.5,13.3);
-    t= sum(6,1.1,2.1,13.1,4.1,5.1,6.1);
-    printf("return value for "
-           "sum(3,1.1,2.5,13.3):       %g\n",s);
-    printf("return value for "
-           "sum(6,1.1,2.1,13.1,4.1,5.1,6.1): %g\n",t);
+    int xie[]={1,2,3,4,5,6,7,8,9,10};
+    qsort(xie,10, sizeof(int),cmp);
+    for (int i = 0; i < 10; ++i)
+    {
+        printf("%d\t",xie[i]);
+    }
 
     puts("Done!\n");
     getchar();
@@ -22,15 +17,11 @@ int main(void)
     return 0;
 }
 
-double sum(int lim,...)
+int cmp(const void *p1,const void *p2)
 {
-    va_list ap;
-    double tot=0;
-    int i;
-
-    va_start(ap,lim);
-    for (i=0;i<lim;i++) tot+= va_arg(ap,double );
-    va_end(ap);
-
-    return tot;
+    const int* a1=(const int *)p1;
+    const int* a2=(const int *)p2;
+    if(*a1>*a2) return -1;
+    else if(*a1==*a2) return 0;
+    else return 1;
 }
