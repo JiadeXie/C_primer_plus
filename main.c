@@ -1,58 +1,59 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define TSIZE 45
-
-struct film
-{
-    char title[TSIZE];
-    int rating;
-    struct film* next;
-};
+#include "list.h"
+void showmovies(Item item);
 char* s_gets(char* st,int n);
 
 int main(void)
 {
-    struct film *head=NULL;
-    struct film *prev,*current;
-    char input[TSIZE];
-    //收集并存储信息
-    puts("Enter first movie title:\n");
-    while (s_gets(input,TSIZE)!=NULL&&input[0]!='\0')
+    List movies;
+    Item temp;
+    InitializeList(&movies);
+    if(ListIsFull(&movies))
     {
-        current=(struct film*) malloc(sizeof(struct film));
-        if(head==NULL) head=current;
-        else prev->next=current;
-        current->next=NULL;
-        strcpy(current->title,input);
-        puts("Enter your rating <0-10>:");
-        scanf("%d",&current->rating);
+        fprintf(stderr,"No memory available!\n");
+        exit(1);
+    }
+
+    puts("Enter first movie title:");
+    while (s_gets(temp.title,TSIZE)!=NULL&&temp.title[0]!='\0')
+    {
+        puts("Enter your rating<0-10>:\n");
+        scanf("%d",&temp.rating);
         while (getchar()!='\n') continue;
-        puts("Enter next movie title(empty line to stop):");
-        prev=current;
+        if(AddItem(temp,&movies)==false)
+        {
+            fprintf(stderr,"Problem allocating memory\n");
+            break;
+        }
+        if(ListIsFull(&movies))
+        {
+            puts("The list is now full.\n");
+            break;
+        }
+        puts("Enter next movies title(empty line to stop):");
     }
-    //显示电影列表
-    if(head==NULL) printf("No data entered.");
-    else printf("Here is the movie list:\n");
-    current=head;
-    while (current!=NULL)
+
+    if(ListIsEmpty(&movies)) printf("No data entered.\n");
+    else
     {
-        printf("Movie: %s Rating: %d\n",current->title,current->rating);
-        current=current->next;
+        printf("Here is the movie list:\n");
+        Traverse(&movies,showmovies);
     }
-    //任务完成，释放内存
-    current=head;
-    while (current!=NULL)
-    {
-        head=current->next;
-        free(current);
-        current=head;
-    }
+    printf("You entered %d movies.\n", ListItemCount(&movies));
+
+    EmptyTheList(&movies);
 
     puts("Done!\n");
     getchar();
     getchar();
     return 0;
+}
+
+void showmovies(Item item)
+{
+    printf("Movie: %s Rating:%d\n",item.title,item.rating);
 }
 
 char* s_gets(char* st,int n)
