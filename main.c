@@ -1,15 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
-int cmp(const void *p1,const void *p2);
+#include <math.h>
+#include <stdarg.h>
+void show_array(const double ar[],int n);
+double* new_d_array(int n,...);
 
 int main(void)
 {
-    int xie[]={1,2,3,4,5,6,7,8,9,10};
-    qsort(xie,10, sizeof(int),cmp);
-    for (int i = 0; i < 10; ++i)
-    {
-        printf("%d\t",xie[i]);
-    }
+    double* p1= new_d_array(5,1.2,2.3,3.4,4.5,5.6);
+    double* p2= new_d_array(4,100.0,20.0,8.08,-1890.0);
+    show_array(p1,5);
+    show_array(p2,4);
+    free(p1);
+    free(p2);
 
     puts("Done!\n");
     getchar();
@@ -17,11 +20,23 @@ int main(void)
     return 0;
 }
 
-int cmp(const void *p1,const void *p2)
+double* new_d_array(int n,...)
 {
-    const int* a1=(const int *)p1;
-    const int* a2=(const int *)p2;
-    if(*a1>*a2) return -1;
-    else if(*a1==*a2) return 0;
-    else return 1;
+    va_list ap;
+    double* ar=(double *) malloc(n* sizeof(double ));
+
+    va_start(ap,n);
+    for (int i = 0; i < n; ++i) ar[i]= va_arg(ap,double );
+
+    va_end(ap);
+    return ar;
+}
+
+void show_array(const double ar[],int n)
+{
+    for (int i = 0; i < n; ++i)
+    {
+        printf("%.2f\t",ar[i]);
+    }
+    putchar('\n');
 }
