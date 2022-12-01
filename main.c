@@ -1,18 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
-#include <stdarg.h>
-void show_array(const double ar[],int n);
-double* new_d_array(int n,...);
+#include <string.h>
+#define TSIZE 45
+#define FMAX 5
+
+struct film
+{
+    char title[TSIZE];
+    int rating;
+};
+char* s_gets(char* st,int n);
 
 int main(void)
 {
-    double* p1= new_d_array(5,1.2,2.3,3.4,4.5,5.6);
-    double* p2= new_d_array(4,100.0,20.0,8.08,-1890.0);
-    show_array(p1,5);
-    show_array(p2,4);
-    free(p1);
-    free(p2);
+    struct film movies[FMAX];
+    int i=0;
+    int j;
+
+    puts("Enter first movie title:");
+    while (i<FMAX&& s_gets(movies[i].title,TSIZE)!=NULL&&movies[i].title[0]!='\0')
+    {
+        puts("Enter your rating <0-10>:");
+        scanf("%d",&movies[i++].rating);
+        while (getchar()!='\n') continue;
+        puts("Enter next movie title(empty line to quit):\n");
+    }
+    if(i==0) printf("No data entered.");
+    else printf("Here is the movie list:\n");
+    for (j=0;j<i;j++) printf("Movie: %s Rating: %d\n",movies[j].title,movies[j].rating);
 
     puts("Done!\n");
     getchar();
@@ -20,23 +35,18 @@ int main(void)
     return 0;
 }
 
-double* new_d_array(int n,...)
+char* s_gets(char* st,int n)
 {
-    va_list ap;
-    double* ar=(double *) malloc(n* sizeof(double ));
+    char* ret_val;
+    char* find;
 
-    va_start(ap,n);
-    for (int i = 0; i < n; ++i) ar[i]= va_arg(ap,double );
-
-    va_end(ap);
-    return ar;
-}
-
-void show_array(const double ar[],int n)
-{
-    for (int i = 0; i < n; ++i)
+    ret_val= fgets(st,n,stdin);
+    if(ret_val)
     {
-        printf("%.2f\t",ar[i]);
+        find= strchr(st,'\n');
+        if(find) *find='\0';
+        else while (getchar()!='\n') continue;
     }
-    putchar('\n');
+    return ret_val;
 }
+
