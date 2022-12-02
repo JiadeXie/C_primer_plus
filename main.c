@@ -1,60 +1,50 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "list.h"
-void showmovies(Item item);
+#include "queue.h"
 char* s_gets(char* st,int n);
 
 int main(void)
 {
-    List movies;
+    Queue line;
     Item temp;
-    InitializeList(&movies);
-    if(ListIsFull(&movies))
-    {
-        fprintf(stderr,"No memory available!\n");
-        exit(1);
-    }
+    char ch;
 
-    puts("Enter first movie title:");
-    while (s_gets(temp.title,TSIZE)!=NULL&&temp.title[0]!='\0')
+    InitializeQueue(&line);
+    puts("Testing the Queue interface.Type a to add a value,");
+    puts("type d to delete a value,and type q to quit.");
+    while ((ch= getchar())!='q')
     {
-        puts("Enter your rating<0-10>:\n");
-        scanf("%d",&temp.rating);
-        while (getchar()!='\n') continue;
-        if(AddItem(temp,&movies)==false)
+        if(ch!='a'&&ch!='d') continue;
+        if(ch=='a')
         {
-            fprintf(stderr,"Problem allocating memory\n");
-            break;
+            printf("Integer to add:");
+            scanf("%d",&temp);
+            if(!QueueIsFull(&line))
+            {
+                printf("Putting %d into queue\n",temp);
+                EnQueue(temp,&line);
+            }
         }
-        if(ListIsFull(&movies))
-        {
-            puts("The list is now full.\n");
-            break;
-        }
-        puts("Enter next movies title(empty line to stop):");
+        else
+            {
+                if(QueueIsEmpty(&line)) puts("Nothing to delete!");
+                else
+                {
+                    DeQueue(&temp,&line);
+                    printf("Removing %d from queue\n",temp);
+                }
+            }
+        printf("%d items in queue\n", QueueItemCount(&line));
+        puts("Type a to add,d to delete,q to quit:");
     }
 
-    if(ListIsEmpty(&movies)) printf("No data entered.\n");
-    else
-    {
-        printf("Here is the movie list:\n");
-        Traverse(&movies,showmovies);
-    }
-    printf("You entered %d movies.\n", ListItemCount(&movies));
-
-    EmptyTheList(&movies);
-
+    EmptyTheQueue(&line);
     puts("Done!\n");
     getchar();
     getchar();
     return 0;
 }
 
-void showmovies(Item item)
-{
-    printf("Movie: %s Rating:%d\n",item.title,item.rating);
-}
+
 
 char* s_gets(char* st,int n)
 {
