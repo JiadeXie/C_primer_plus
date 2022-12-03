@@ -1,6 +1,7 @@
 #ifndef MAIN_C_QUEUE_H
 #define MAIN_C_QUEUE_H
 #include <stdbool.h>
+#include <string.h>
 
 typedef int Item;//用于main（）中，即保存在队列中的数据
 
